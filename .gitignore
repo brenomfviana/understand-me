@@ -1,0 +1,8 @@
+CanaChat/nbproject/
+CanaChat/dist/
+CanaChat/lib/CopyLibs/
+CanaChatServer/nbproject/
+CanaChatServer/dist/
+CanaChatServer/lib/CopyLibs/
+*.xml
+*.properties
