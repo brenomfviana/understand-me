@@ -3,39 +3,57 @@
  */
 package canachatserver;
 
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashSet;
+import java.util.HashMap;
+import com.google.api.services.translate.Translate;
+import com.google.api.services.translate.model.TranslationsListResponse;
+import com.google.api.services.translate.model.TranslationsResource;
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * A handler thread class. Handlers are spawned from the listening loop and are
  * responsible for a dealing with a single client and broadcasting its messages.
+ *
+ * @author Breno Viana
+ * @version 05/04/2017
  */
 public class Handler extends Thread {
 
-    // Client name
-    private String name;
-    // Socket
-    private Socket socket;
     // Receive client messages
     private BufferedReader in;
     // Send client messages
     private PrintWriter out;
 
+    // Client name
+    private String name;
+    // Client language
+    private int language;
+
+    // Socket
+    private Socket socket;
+
+    // Google API key
+    private static String GOOGLE_APPLICATION_CREDENTIALS
+            = "AIzaSyAy1cWAHTruRbvTqCFdxUbgundOxr7YEks";
+
     /**
      * The set of all names of clients in the chat room. Maintained so that we
      * can check that new clients are not registering name already in use.
      */
-    private static HashSet<String> names = new HashSet<String>();
+    private static HashMap<String, Integer> names = new HashMap<String, Integer>();
 
     /**
      * The set of all the print writers for all the clients. This set is kept so
      * we can easily broadcast messages.
      */
-    private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
+    private static HashMap<PrintWriter, Integer> writers = new HashMap<PrintWriter, Integer>();
 
     /**
      * Constructs a handler thread, squirreling away the socket. All the
@@ -65,12 +83,13 @@ public class Handler extends Thread {
             while (true) {
                 out.println("SUBMITNAME");
                 name = in.readLine();
+                language = Integer.valueOf(in.readLine());
                 if (name == null) {
                     return;
                 }
                 synchronized (names) {
-                    if (!names.contains(name)) {
-                        names.add(name);
+                    if (!names.keySet().contains(name)) {
+                        names.put(name, language);
                         break;
                     }
                 }
@@ -80,7 +99,7 @@ public class Handler extends Thread {
             // socket's print writer to the set of all writers so
             // this client can receive broadcast messages.
             out.println("NAMEACCEPTED");
-            writers.add(out);
+            writers.put(out, language);
 
             // Accept messages from this client and broadcast them.
             // Ignore other clients that cannot be broadcasted to.
@@ -89,8 +108,31 @@ public class Handler extends Thread {
                 if (input == null) {
                     return;
                 }
-                for (PrintWriter writer : writers) {
-                    writer.println("MESSAGE " + name + ": " + input);
+                for (Map.Entry<PrintWriter, Integer> writer : writers.entrySet()) {
+                    try {
+                        // 
+                        Translate t = new Translate.Builder(
+                                GoogleNetHttpTransport.newTrustedTransport(),
+                                GsonFactory.getDefaultInstance(), null)
+                                // Need to update this to your App-Name
+                                .setApplicationName("CanaChat")
+                                .build();
+                        Translate.Translations.List list = t.new Translations().list(
+                                Arrays.asList(input),
+                                //Target language
+                                ((writer.getValue()) == Languages.ENGLISH) ? "EN"
+                                        : (writer.getValue() == Languages.PORTUGUESE ? "PT" : "ES"));
+                        // Google Cloud API
+                        list.setKey(GOOGLE_APPLICATION_CREDENTIALS);
+                        // Translate
+                        TranslationsListResponse response = list.execute();
+                        // Send messages
+                        for (TranslationsResource tr : response.getTranslations()) {
+                            writer.getKey().println("MESSAGE " + name + ": " + tr.getTranslatedText());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } catch (IOException e) {
