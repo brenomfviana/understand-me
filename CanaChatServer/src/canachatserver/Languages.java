@@ -4,7 +4,7 @@
 package canachatserver;
 
 /**
- * Languages.
+ * Supported languages.
  *
  * @author Breno Viana
  * @version 05/04/2017

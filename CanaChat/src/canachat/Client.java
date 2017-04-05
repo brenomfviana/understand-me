@@ -77,6 +77,15 @@ public class Client {
     }
 
     /**
+     * Get client language.
+     *
+     * @return Client language.
+     */
+    public int getLanguage() {
+        return language;
+    }
+
+    /**
      * Set client language.
      *
      * @param language Client language
@@ -174,7 +183,7 @@ public class Client {
                 socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
         // Send your name to server
-        this.out.println(getName());
+        this.out.println(getName() + "\n" + getLanguage());
         // Update title
         this.frame.setTitle("CanaChat: " + getName());
 
@@ -185,10 +194,10 @@ public class Client {
             // Check protocol
             if (line.startsWith("NAMEACCEPTED")) {
                 // Turn on sending messages
-                this.frame.getjTextField().setEditable(true);
+                this.frame.getJTextField().setEditable(true);
             } else if (line.startsWith("MESSAGE")) {
                 // Print received messages
-                this.frame.getjMessageArea().append(line.substring(8) + "\n");
+                this.frame.getJMessageArea().append(line.substring(8) + "\n");
             }
         }
     }

@@ -81,12 +81,15 @@ public class Handler extends Thread {
             // checking for the existence of a name and adding the name
             // must be done while locking the set of names.
             while (true) {
+                // Get name and language of the client
                 out.println("SUBMITNAME");
                 name = in.readLine();
                 language = Integer.valueOf(in.readLine());
+                // Check if is a valid value
                 if (name == null) {
                     return;
                 }
+                // Adds the client to chat
                 synchronized (names) {
                     if (!names.keySet().contains(name)) {
                         names.put(name, language);
@@ -104,19 +107,24 @@ public class Handler extends Thread {
             // Accept messages from this client and broadcast them.
             // Ignore other clients that cannot be broadcasted to.
             while (true) {
+                // Get message
                 String input = in.readLine();
+                // Check if the message is valid
                 if (input == null) {
                     return;
                 }
+                // Send message to all chat clients and translate to respective
+                // language
                 for (Map.Entry<PrintWriter, Integer> writer : writers.entrySet()) {
                     try {
-                        // 
+                        // Initialize the translator
                         Translate t = new Translate.Builder(
                                 GoogleNetHttpTransport.newTrustedTransport(),
                                 GsonFactory.getDefaultInstance(), null)
                                 // Need to update this to your App-Name
                                 .setApplicationName("CanaChat")
                                 .build();
+                        // Prepare to translate
                         Translate.Translations.List list = t.new Translations().list(
                                 Arrays.asList(input),
                                 //Target language
@@ -124,7 +132,7 @@ public class Handler extends Thread {
                                         : (writer.getValue() == Languages.PORTUGUESE ? "PT" : "ES"));
                         // Google Cloud API
                         list.setKey(GOOGLE_APPLICATION_CREDENTIALS);
-                        // Translate
+                        // Translate message
                         TranslationsListResponse response = list.execute();
                         // Send messages
                         for (TranslationsResource tr : response.getTranslations()) {

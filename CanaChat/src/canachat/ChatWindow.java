@@ -4,10 +4,6 @@
 package canachat;
 
 import java.awt.CardLayout;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -24,6 +20,11 @@ public class ChatWindow extends javax.swing.JFrame {
     private String CHOOSE_CLENT_NAME = "CHOOSE_CLENT_NAME";
     private String CHOOSE_CLENT_LANGUAGE = "CHOOSE_CLENT_LANGUAGE";
     private String CHAT = "CHAT";
+
+    // Languages 
+    private String[] languages = {Languages.ENGLISH,
+        Languages.PORTUGUESE,
+        Languages.SPANISH};
 
     // Client handler
     private Handler handler;
@@ -50,12 +51,12 @@ public class ChatWindow extends javax.swing.JFrame {
         this.jMainPanel.add(jChatPanel, CHAT);
     }
 
-    public JTextField getjTextField() {
-        return jMessageTextField;
+    public JTextField getJTextField() {
+        return this.jMessageTextField;
     }
 
-    public JTextArea getjMessageArea() {
-        return jMessageArea;
+    public JTextArea getJMessageArea() {
+        return this.jMessageArea;
     }
 
     /**
@@ -77,7 +78,7 @@ public class ChatWindow extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jEnterButton = new javax.swing.JButton();
         jEnterTheLanguagePanel = new javax.swing.JPanel();
-        jClientLanguageTextField = new javax.swing.JTextField();
+        jClientLanguageComboBox = new javax.swing.JComboBox(languages);
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jEnterButton1 = new javax.swing.JButton();
@@ -105,16 +106,16 @@ public class ChatWindow extends javax.swing.JFrame {
         javax.swing.GroupLayout jChatPanelLayout = new javax.swing.GroupLayout(jChatPanel);
         jChatPanel.setLayout(jChatPanelLayout);
         jChatPanelLayout.setHorizontalGroup(
-            jChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jMessageTextField)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                jChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jMessageTextField)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         jChatPanelLayout.setVerticalGroup(
-            jChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jChatPanelLayout.createSequentialGroup()
-                .addComponent(jMessageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))
+                jChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jChatPanelLayout.createSequentialGroup()
+                        .addComponent(jMessageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))
         );
 
         jClientNameTextField.setFont(new java.awt.Font("Raleway Light", 1, 12)); // NOI18N
@@ -145,32 +146,32 @@ public class ChatWindow extends javax.swing.JFrame {
         javax.swing.GroupLayout jEnterTheNamePanelLayout = new javax.swing.GroupLayout(jEnterTheNamePanel);
         jEnterTheNamePanel.setLayout(jEnterTheNamePanelLayout);
         jEnterTheNamePanelLayout.setHorizontalGroup(
-            jEnterTheNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jEnterTheNamePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jEnterTheNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jClientNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jEnterButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                jEnterTheNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jEnterTheNamePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jEnterTheNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                .addComponent(jClientNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jEnterButton))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jEnterTheNamePanelLayout.setVerticalGroup(
-            jEnterTheNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jEnterTheNamePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(89, 89, 89)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jClientNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jEnterButton)
-                .addContainerGap(89, Short.MAX_VALUE))
+                jEnterTheNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jEnterTheNamePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(89, 89, 89)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jClientNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jEnterButton)
+                        .addContainerGap(89, Short.MAX_VALUE))
         );
 
-        jClientLanguageTextField.setFont(new java.awt.Font("Raleway Light", 1, 12)); // NOI18N
-        jClientLanguageTextField.addActionListener(new java.awt.event.ActionListener() {
+        jClientLanguageComboBox.setFont(new java.awt.Font("Raleway Light", 1, 12)); // NOI18N
+        jClientLanguageComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jClientLanguageTextFieldActionPerformed(evt);
             }
@@ -197,28 +198,28 @@ public class ChatWindow extends javax.swing.JFrame {
         javax.swing.GroupLayout jEnterTheLanguagePanelLayout = new javax.swing.GroupLayout(jEnterTheLanguagePanel);
         jEnterTheLanguagePanel.setLayout(jEnterTheLanguagePanelLayout);
         jEnterTheLanguagePanelLayout.setHorizontalGroup(
-            jEnterTheLanguagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jEnterTheLanguagePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jEnterTheLanguagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jClientLanguageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jEnterButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                jEnterTheLanguagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jEnterTheLanguagePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jEnterTheLanguagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                .addComponent(jClientLanguageComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jEnterButton1))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jEnterTheLanguagePanelLayout.setVerticalGroup(
-            jEnterTheLanguagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jEnterTheLanguagePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(89, 89, 89)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jClientLanguageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jEnterButton1)
-                .addContainerGap(89, Short.MAX_VALUE))
+                jEnterTheLanguagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jEnterTheLanguagePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(89, 89, 89)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jClientLanguageComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jEnterButton1)
+                        .addContainerGap(89, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -252,50 +253,50 @@ public class ChatWindow extends javax.swing.JFrame {
         javax.swing.GroupLayout jLogOnServerPanelLayout = new javax.swing.GroupLayout(jLogOnServerPanel);
         jLogOnServerPanel.setLayout(jLogOnServerPanelLayout);
         jLogOnServerPanelLayout.setHorizontalGroup(
-            jLogOnServerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jLogOnServerPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jLogOnServerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jIPAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLogInButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                jLogOnServerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jLogOnServerPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jLogOnServerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                .addComponent(jIPAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLogInButton))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jLogOnServerPanelLayout.setVerticalGroup(
-            jLogOnServerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jLogOnServerPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(89, 89, 89)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jIPAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLogInButton)
-                .addContainerGap(89, Short.MAX_VALUE))
+                jLogOnServerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jLogOnServerPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(89, 89, 89)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jIPAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLogInButton)
+                        .addContainerGap(89, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jMainPanelLayout = new javax.swing.GroupLayout(jMainPanel);
         jMainPanel.setLayout(jMainPanelLayout);
         jMainPanelLayout.setHorizontalGroup(
-            jMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLogOnServerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                jMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLogOnServerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jMainPanelLayout.setVerticalGroup(
-            jMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLogOnServerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                jMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLogOnServerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -315,11 +316,11 @@ public class ChatWindow extends javax.swing.JFrame {
     private void jEnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEnterButtonActionPerformed
         this.handler.setName(jClientNameTextField.getText());
         card.show(jMainPanel, CHOOSE_CLENT_LANGUAGE);
-        jClientLanguageTextField.requestFocusInWindow();
+        jClientLanguageComboBox.requestFocusInWindow();
     }//GEN-LAST:event_jEnterButtonActionPerformed
 
     private void jEnterButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEnterButton1ActionPerformed
-        this.handler.setLanguage(Integer.valueOf(jClientLanguageTextField.getText()));
+        this.handler.setLanguage(jClientLanguageComboBox.getSelectedIndex());
         card.show(jMainPanel, CHAT);
         jMessageTextField.requestFocusInWindow();
     }//GEN-LAST:event_jEnterButton1ActionPerformed
@@ -333,18 +334,18 @@ public class ChatWindow extends javax.swing.JFrame {
     private void jClientNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jClientNameTextFieldActionPerformed
         this.handler.setName(jClientNameTextField.getText());
         card.show(jMainPanel, CHOOSE_CLENT_LANGUAGE);
-        jClientLanguageTextField.requestFocusInWindow();
+        jClientLanguageComboBox.requestFocusInWindow();
     }//GEN-LAST:event_jClientNameTextFieldActionPerformed
 
     private void jClientLanguageTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jClientLanguageTextFieldActionPerformed
-        this.handler.setLanguage(Integer.valueOf(jClientLanguageTextField.getText()));
+        this.handler.setLanguage(jClientLanguageComboBox.getSelectedIndex());
         card.show(jMainPanel, CHAT);
         jMessageTextField.requestFocusInWindow();
     }//GEN-LAST:event_jClientLanguageTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jChatPanel;
-    private javax.swing.JTextField jClientLanguageTextField;
+    private javax.swing.JComboBox jClientLanguageComboBox;
     private javax.swing.JTextField jClientNameTextField;
     private javax.swing.JButton jEnterButton;
     private javax.swing.JButton jEnterButton1;

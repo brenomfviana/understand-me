@@ -15,8 +15,11 @@ public class CanaChatClient {
      * Runs the client as an application with a closeable frame.
      */
     public static void main(String[] args) throws Exception {
+        // Create the client
         Client client = new Client();
+        // Get client information
         client.start();
+        // Run chat
         client.getHandler().run();
     }
 }
