@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import javax.swing.JOptionPane;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple client for the chat server.
@@ -23,67 +23,125 @@ import javax.swing.JOptionPane;
  * following this string should be displayed in its message area.
  *
  * @author Breno Viana
- * @version 04/04/2017
+ * @version 05/04/2017
  */
 public class Client {
 
     // Send messages
-    BufferedReader in;
+    private BufferedReader in;
     // Print messages
-    PrintWriter out;
-    // Chat GUI
-    ChatWindow frame;
+    private PrintWriter out;
+
     // Client name
-    String name;
+    private String name;
+    // Client language
+    private int language;
+    // Chat GUI
+    private ChatWindow frame;
+    // Client handler
+    private Handler handler;
+
+    // Server Address
+    private String serverAddress;
 
     /**
      * Constructs the client.
      */
     public Client() {
+        this.language = -1;
+        this.handler = new Handler(this);
     }
 
     /**
-     * Prompt for and return the address of the server.
+     * .
+     * @return
      */
-    private String getServerAddress() {
-        return JOptionPane.showInputDialog(
-                frame,
-                "Enter IP Address of the Server:",
-                "Welcome to the Chatter",
-                JOptionPane.QUESTION_MESSAGE);
-    }
-
-    /**
-     * Prompt for and return the desired screen name.
-     */
-    private String setName() {
-        return JOptionPane.showInputDialog(
-                frame,
-                "Choose a screen name:",
-                "Screen name selection",
-                JOptionPane.PLAIN_MESSAGE);
+    public BufferedReader getIn() {
+        return this.in;
     }
 
     /**
      * Get client name.
      */
     private String getName() {
-        return name;
+        return this.name;
     }
 
     /**
-     * Connects to the server then enters the processing loop.
+     * Set the client name.
+     *
+     * @param name Client name
      */
-    public void run() throws IOException {
-        // Make connection
-        String serverAddress = getServerAddress();
-        Socket socket = new Socket(serverAddress, 9001);
-        // Initialize streams
-        in = new BufferedReader(new InputStreamReader(
-                socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Set client language.
+     *
+     * @param language Client language
+     */
+    public void setLanguage(int language) {
+        this.language = language;
+    }
+
+    /**
+     * Get server address.
+     *
+     * @return Server address
+     */
+    public String getServerAddress() {
+        return this.serverAddress;
+    }
+
+    /**
+     * Set the server address.
+     *
+     * @param serverAddress Server Address
+     */
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress = serverAddress;
+    }
+
+    /**
+     * Print the received messsages.
+     *
+     * @param message Received message
+     */
+    public void printMessage(String message) {
+        this.out.println(message);
+    }
+
+    /**
+     * Get client handler.
+     *
+     * @return Client handler
+     */
+    public Handler getHandler() {
+        return this.handler;
+    }
+
+    /**
+     * Initialize the chat window.
+     */
+    public void layout() {
         // Layout
-        frame = new ChatWindow(out);
+        this.frame = new ChatWindow(this.handler);
+
+        /* Set the Nimbus look and feel */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info
+                    : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("GTK+".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                javax.swing.UnsupportedLookAndFeelException ex) {
+            // Error
+            java.util.logging.Logger.getLogger(ChatWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
 
         /* Display the chat window. */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -91,18 +149,41 @@ public class Client {
                 frame.setVisible(true);
             }
         });
+    }
+
+    /**
+     * Start the chat client.
+     */
+    public void start() throws InterruptedException {
+        // Initializes chat window
+        layout();
+        // Wait for config
+        while (this.language == -1) {
+            TimeUnit.MILLISECONDS.sleep(10);
+        }
+    }
+
+    /**
+     * Connects to the server then enters the processing loop.
+     */
+    public void run() throws IOException {
+        // Make connection
+        Socket socket = new Socket(this.serverAddress, 9001);
+        // Initialize streams
+        this.in = new BufferedReader(new InputStreamReader(
+                socket.getInputStream()));
+        this.out = new PrintWriter(socket.getOutputStream(), true);
+        // Send your name to server
+        this.out.println(getName());
+        // Update title
+        this.frame.setTitle("CanaChat: " + getName());
 
         // Process all messages from server, according to the protocol.
         while (true) {
             // Get message
             String line = in.readLine();
             // Check protocol
-            if (line.startsWith("SUBMITNAME")) {
-                // Send messages
-                this.name = setName();
-                out.println(getName());
-                frame.setTitle("CanaChat: " + getName());
-            } else if (line.startsWith("NAMEACCEPTED")) {
+            if (line.startsWith("NAMEACCEPTED")) {
                 // Turn on sending messages
                 this.frame.getjTextField().setEditable(true);
             } else if (line.startsWith("MESSAGE")) {
