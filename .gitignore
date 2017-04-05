@@ -6,3 +6,5 @@ CanaChatServer/dist/
 CanaChatServer/lib/CopyLibs/
 *.xml
 *.properties
+*.class
+*.form
