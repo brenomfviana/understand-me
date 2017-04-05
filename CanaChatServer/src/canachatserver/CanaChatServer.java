@@ -3,62 +3,46 @@
  */
 package canachatserver;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Cana chat server.
+ * A multithreaded chat room server. When a client connects the server requests
+ * a screen name by sending the client the text "SUBMITNAME", and keeps
+ * requesting a name until a unique one is received. After a client submits a
+ * unique name, the server acknowledges with "NAMEACCEPTED". Then all messages
+ * from that client will be broadcast to all other clients that have submitted a
+ * unique screen name. The broadcast messages are prefixed with "MESSAGE ".
  *
- * @author Breno Viana
+ * Because this is just a teaching example to illustrate a simple chat server,
+ * there are a few features that have been left out. Two are very useful and
+ * belong in production code:
+ *
+ * 1. The protocol should be enhanced so that the client can send clean
+ * disconnect messages to the server.
+ *
+ * 2. The server should do some logging.
  */
 public class CanaChatServer {
 
     /**
-     * @param args the command line arguments
+     * The port that the server listens on.
      */
-    public static void main(String[] args) {
+    private static final int PORT = 9001;
+
+    /**
+     * The appplication main method, which just listens on a port and spawns
+     * handler threads.
+     */
+    public static void main(String[] args) throws Exception {
+        // Initialize server
+        System.out.println("The CanaChat server is running on port: " + PORT + ".");
+        ServerSocket listener = new ServerSocket(PORT);
         try {
-            int port = 25000;
-            ServerSocket serverSocket = new ServerSocket(port);
-            System.out.println("Server Started and listening to the port 25000");
-            List<Socket> sockets = new ArrayList<>();
-
-            //Server is running always. This is done using this while(true) loop
             while (true) {
-                //Reading the message from the client
-                sockets.add(serverSocket.accept());
-
-                if (sockets.size() == 2) {
-                    InputStream is = sockets.get(0).getInputStream();
-                    InputStreamReader isr = new InputStreamReader(is);
-                    BufferedReader br = new BufferedReader(isr);
-                    String message = br.readLine();
-                    System.out.println("Message received from client is " + message);
-
-                    //Sending the response back to the client.
-                    OutputStream os = sockets.get(1).getOutputStream();
-                    OutputStreamWriter osw = new OutputStreamWriter(os);
-                    BufferedWriter bw = new BufferedWriter(osw);
-                    bw.write(message);
-                    System.out.println("Message sent to the client is " + message);
-                    bw.flush();
-                }
+                new Handler(listener.accept()).start();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
-            try {
-                // socket.close();
-            } catch (Exception e) {
-            }
+            listener.close();
         }
     }
 
