@@ -16,9 +16,13 @@ import java.util.HashSet;
  */
 public class Handler extends Thread {
 
+    // Client name
     private String name;
+    // Socket
     private Socket socket;
+    // Receive client messages
     private BufferedReader in;
+    // Send client messages
     private PrintWriter out;
 
     /**
@@ -49,7 +53,6 @@ public class Handler extends Thread {
      */
     public void run() {
         try {
-
             // Create character streams for the socket.
             in = new BufferedReader(new InputStreamReader(
                     socket.getInputStream()));
