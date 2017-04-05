@@ -17,7 +17,7 @@ To compile the chat server enter the following command:
 
 To generate the jar executable run the following command:
 
-	jar cfm dist/CanaChatServer.jar manifest.mf CanaChatServer/src/canachatserver/*.class
+	jar cfm dist/CanaChatServer.jar manifest.mf src/canachatserver/*.class
 
 #### Client
 
@@ -28,7 +28,7 @@ To compile the chat client enter the following command:
 
 To generate the jar executable run the following command:
 
-	jar cfm dist/CanaChat.jar manifest.mf CanaChat/src/canachat/*.class
+	jar cfm dist/CanaChat.jar manifest.mf src/canachat/*.class
 
 ## How to use
 
