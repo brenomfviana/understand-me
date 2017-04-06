@@ -194,7 +194,7 @@ public class Client {
             // Check protocol
             if (line.startsWith("NAMEACCEPTED")) {
                 // Turn on sending messages
-                this.frame.getJTextField().setEditable(true);
+                this.frame.getJMessageTextField().setEditable(true);
             } else if (line.startsWith("MESSAGE")) {
                 // Print received messages
                 this.frame.getJMessageArea().append(line.substring(8) + "\n");

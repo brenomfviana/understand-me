@@ -4,6 +4,7 @@
 package canachat;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -51,7 +52,7 @@ public class ChatWindow extends javax.swing.JFrame {
         this.jMainPanel.add(jChatPanel, CHAT);
     }
 
-    public JTextField getJTextField() {
+    public JTextField getJMessageTextField() {
         return this.jMessageTextField;
     }
 
@@ -171,11 +172,8 @@ public class ChatWindow extends javax.swing.JFrame {
         );
 
         jClientLanguageComboBox.setFont(new java.awt.Font("Raleway Light", 1, 12)); // NOI18N
-        jClientLanguageComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jClientLanguageTextFieldActionPerformed(evt);
-            }
-        });
+        jClientLanguageComboBox.setBackground(Color.white);
+        jClientLanguageComboBox.setEnabled(true);
 
         jLabel7.setFont(new java.awt.Font("Raleway Light", 1, 12)); // NOI18N
         jLabel7.setText("Choose a language:");
@@ -336,12 +334,6 @@ public class ChatWindow extends javax.swing.JFrame {
         card.show(jMainPanel, CHOOSE_CLENT_LANGUAGE);
         jClientLanguageComboBox.requestFocusInWindow();
     }//GEN-LAST:event_jClientNameTextFieldActionPerformed
-
-    private void jClientLanguageTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jClientLanguageTextFieldActionPerformed
-        this.handler.setLanguage(jClientLanguageComboBox.getSelectedIndex());
-        card.show(jMainPanel, CHAT);
-        jMessageTextField.requestFocusInWindow();
-    }//GEN-LAST:event_jClientLanguageTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jChatPanel;
