@@ -137,6 +137,8 @@ public class Handler extends Thread {
                         // Send messages
                         for (TranslationsResource tr : response.getTranslations()) {
                             writer.getKey().println("MESSAGE " + name + ": " + tr.getTranslatedText());
+                            System.out.println("Sent by: " + name);
+                            System.out.println("Message: " + tr.getTranslatedText());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
