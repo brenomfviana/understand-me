@@ -127,7 +127,7 @@ public class Handler extends Thread {
                                 ((writer.getValue()) == Languages.ENGLISH) ? "EN"
                                         : (writer.getValue() == Languages.PORTUGUESE ? "PT" : "ES"));
                         // Google Cloud API
-                        list.setKey(GOOGLE_APPLICATION_CREDENTIALS);
+                        list.setKey(APIKEY.GOOGLE_APPLICATION_CREDENTIALS);
                         // Translate message
                         TranslationsListResponse response = list.execute();
                         // Send messages
