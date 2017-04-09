@@ -39,10 +39,6 @@ public class Handler extends Thread {
     // Socket
     private Socket socket;
 
-    // Google API key
-    private static String GOOGLE_APPLICATION_CREDENTIALS
-            = "AIzaSyAy1cWAHTruRbvTqCFdxUbgundOxr7YEks";
-
     /**
      * The set of all names of clients in the chat room. Maintained so that we
      * can check that new clients are not registering name already in use.

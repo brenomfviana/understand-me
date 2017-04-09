@@ -8,3 +8,4 @@ CanaChatServer/lib/CopyLibs/
 *.properties
 *.class
 *.form
+APIKEY.java

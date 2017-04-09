@@ -21,6 +21,9 @@ import java.net.ServerSocket;
  * disconnect messages to the server.
  *
  * 2. The server should do some logging.
+ *
+ * @author Breno Viana
+ * @version 05/04/2017
  */
 public class CanaChatServer {
 
