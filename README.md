@@ -1,4 +1,5 @@
 <p align="center"><img src ="img/cana-icon.png" width="450px"/></p>
+<p align="right"><sub>I created this icon just to learn a bit more how to use Inkscape.</sub></p>
 
 ## Description
 
