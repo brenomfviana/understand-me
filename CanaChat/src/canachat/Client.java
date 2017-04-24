@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * following this string should be displayed in its message area.
  *
  * @author Breno Viana
- * @version 05/04/2017
+ * @version 24/04/2017
  */
 public class Client {
 
@@ -35,7 +35,7 @@ public class Client {
     // Client name
     private String name;
     // Client language
-    private int language;
+    private Language language;
     // Chat GUI
     private ChatWindow frame;
     // Client handler
@@ -48,13 +48,14 @@ public class Client {
      * Constructs the client.
      */
     public Client() {
-        this.language = -1;
+        this.language = Language.UNKNOW;
         this.handler = new Handler(this);
     }
 
     /**
-     * .
-     * @return
+     * Get message delivery.
+     *
+     * @return Message delivery
      */
     public BufferedReader getIn() {
         return this.in;
@@ -81,7 +82,7 @@ public class Client {
      *
      * @return Client language.
      */
-    public int getLanguage() {
+    public Language getLanguage() {
         return language;
     }
 
@@ -90,7 +91,7 @@ public class Client {
      *
      * @param language Client language
      */
-    public void setLanguage(int language) {
+    public void setLanguage(Language language) {
         this.language = language;
     }
 
@@ -162,18 +163,22 @@ public class Client {
 
     /**
      * Start the chat client.
+     *
+     * @throws java.lang.InterruptedException Thread was interrupted
      */
     public void start() throws InterruptedException {
         // Initializes chat window
         layout();
         // Wait for config
-        while (this.language == -1) {
+        while (this.language.equals(Language.UNKNOW)) {
             TimeUnit.MILLISECONDS.sleep(10);
         }
     }
 
     /**
      * Connects to the server then enters the processing loop.
+     *
+     * @throws java.io.IOException Error on socket
      */
     public void run() throws IOException {
         // Make connection
@@ -183,7 +188,7 @@ public class Client {
                 socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
         // Send your name to server
-        this.out.println(getName() + "\n" + getLanguage());
+        this.out.println(getName() + "\n" + getLanguage().getValue());
         // Update title
         this.frame.setTitle("CanaChat: " + getName());
 

@@ -9,7 +9,7 @@ import java.io.IOException;
  * Client Handler.
  *
  * @author Breno Viana
- * @version 05/04/2017
+ * @version 24/04/2017
  */
 public class Handler {
 
@@ -61,7 +61,6 @@ public class Handler {
         this.client.printMessage(message);
     }
 
-    //
     /**
      * Run the chat client.
      */

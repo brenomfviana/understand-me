@@ -12,20 +12,21 @@ import javax.swing.JTextField;
  * Chat window.
  *
  * @author Breno Viana
- * @version 05/04/2017
+ * @version 24/04/2017
  */
 public class ChatWindow extends javax.swing.JFrame {
 
     // Cards names
-    private String CHAT_SERVER_LOG_ON = "CHAT_SERVER_IP_ADDRESS";
-    private String CHOOSE_CLENT_NAME = "CHOOSE_CLENT_NAME";
-    private String CHOOSE_CLENT_LANGUAGE = "CHOOSE_CLENT_LANGUAGE";
-    private String CHAT = "CHAT";
+    private final String CHAT_SERVER_LOG_ON = "CHAT_SERVER_IP_ADDRESS";
+    private final String CHOOSE_CLENT_NAME = "CHOOSE_CLENT_NAME";
+    private final String CHOOSE_CLENT_LANGUAGE = "CHOOSE_CLENT_LANGUAGE";
+    private final String CHAT = "CHAT";
 
     // Languages 
-    private String[] languages = {Languages.ENGLISH,
-        Languages.PORTUGUESE,
-        Languages.SPANISH};
+    private final String[] languages = {
+        Language.ENGLISH.getValue(),
+        Language.PORTUGUESE.getValue(),
+        Language.SPANISH.getValue()};
 
     // Client handler
     private Handler handler;
