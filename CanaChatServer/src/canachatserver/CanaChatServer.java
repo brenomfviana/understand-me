@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * A multithreaded chat room server.
  *
  * @author Breno Viana
- * @version 05/04/2017
+ * @version 24/04/2017
  */
 public class CanaChatServer {
 

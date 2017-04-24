@@ -3,19 +3,20 @@
  */
 package canachatserver;
 
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Map;
+import java.net.Socket;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.model.TranslationsListResponse;
 import com.google.api.services.translate.model.TranslationsResource;
-import java.util.Arrays;
-import java.util.Map;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 
 /**
  * A handler thread class. Handlers are spawned from the listening loop and are
@@ -29,7 +30,7 @@ import java.util.Map;
  * messages are prefixed with "MESSAGE ".
  *
  * @author Breno Viana
- * @version 05/04/2017
+ * @version 24/04/2017
  */
 public class Handler extends Thread {
 
@@ -41,7 +42,7 @@ public class Handler extends Thread {
     // Client name
     private String name;
     // Client language
-    private int language;
+    private String language;
 
     // Socket
     private Socket socket;
@@ -50,13 +51,13 @@ public class Handler extends Thread {
      * The set of all names of clients in the chat room. Maintained so that we
      * can check that new clients are not registering name already in use.
      */
-    private static HashMap<String, Integer> names = new HashMap<String, Integer>();
+    private static HashMap<String, String> names = new HashMap<String, String>();
 
     /**
      * The set of all the print writers for all the clients. This set is kept so
      * we can easily broadcast messages.
      */
-    private static HashMap<PrintWriter, Integer> writers = new HashMap<PrintWriter, Integer>();
+    private static HashMap<PrintWriter, String> writers = new HashMap<PrintWriter, String>();
 
     /**
      * Constructs a handler thread, squirreling away the socket. All the
@@ -90,7 +91,7 @@ public class Handler extends Thread {
                 // Get name and language of the client
                 out.println("SUBMITNAME");
                 name = in.readLine();
-                language = Integer.valueOf(in.readLine());
+                language = in.readLine();
                 // Check if is a valid value
                 if (name == null) {
                     return;
@@ -121,7 +122,7 @@ public class Handler extends Thread {
                 }
                 // Send message to all chat clients and translate to respective
                 // language
-                for (Map.Entry<PrintWriter, Integer> writer : writers.entrySet()) {
+                for (Map.Entry<PrintWriter, String> writer : writers.entrySet()) {
                     try {
                         // Initialize the translator
                         Translate t = new Translate.Builder(
@@ -134,8 +135,7 @@ public class Handler extends Thread {
                         Translate.Translations.List list = t.new Translations().list(
                                 Arrays.asList(input),
                                 //Target language
-                                ((writer.getValue()) == Languages.ENGLISH) ? "EN"
-                                        : (writer.getValue() == Languages.PORTUGUESE ? "PT" : "ES"));
+                                writer.getValue());
                         // Google Cloud API
                         list.setKey(APIKEY.GOOGLE_APPLICATION_CREDENTIALS);
                         // Translate message
