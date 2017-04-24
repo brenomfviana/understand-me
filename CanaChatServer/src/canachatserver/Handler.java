@@ -21,6 +21,13 @@ import java.util.Map;
  * A handler thread class. Handlers are spawned from the listening loop and are
  * responsible for a dealing with a single client and broadcasting its messages.
  *
+ * When a client connects the server requests a screen name by sending the
+ * client the text "SUBMITNAME", and keeps requesting a name until a unique one
+ * is received. After a client submits a unique name, the server acknowledges
+ * with "NAMEACCEPTED". Then all messages from that client will be broadcast to
+ * all other clients that have submitted a unique screen name. The broadcast
+ * messages are prefixed with "MESSAGE ".
+ *
  * @author Breno Viana
  * @version 05/04/2017
  */
@@ -54,6 +61,8 @@ public class Handler extends Thread {
     /**
      * Constructs a handler thread, squirreling away the socket. All the
      * interesting work is done in the run method.
+     *
+     * @param socket Server socket
      */
     public Handler(Socket socket) {
         this.socket = socket;
@@ -65,6 +74,7 @@ public class Handler extends Thread {
      * registers the output stream for the client in a global set, then
      * repeatedly gets inputs and broadcasts them.
      */
+    @Override
     public void run() {
         try {
             // Create character streams for the socket.
