@@ -26,11 +26,15 @@ public class ChatWindow extends javax.swing.JFrame {
     private final String[] languagesSTR = {
         Language.ENGLISH.getValue(),
         Language.PORTUGUESE.getValue(),
-        Language.SPANISH.getValue()};
+        Language.SPANISH.getValue(),
+        Language.FRENCH.getValue(),
+        Language.GERMAN.getValue()};
     private final Language[] languages = {
         Language.ENGLISH,
         Language.PORTUGUESE,
-        Language.SPANISH};
+        Language.SPANISH,
+        Language.FRENCH,
+        Language.GERMAN};
 
     // Client handler
     private Handler handler;
