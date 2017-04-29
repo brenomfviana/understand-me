@@ -48,7 +48,7 @@ public class Handler {
      *
      * @param language Client language
      */
-    public void setLanguage(int language) {
+    public void setLanguage(Language language) {
         this.client.setLanguage(language);
     }
 

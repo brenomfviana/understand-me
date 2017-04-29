@@ -23,10 +23,14 @@ public class ChatWindow extends javax.swing.JFrame {
     private final String CHAT = "CHAT";
 
     // Languages 
-    private final String[] languages = {
+    private final String[] languagesSTR = {
         Language.ENGLISH.getValue(),
         Language.PORTUGUESE.getValue(),
         Language.SPANISH.getValue()};
+    private final Language[] languages = {
+        Language.ENGLISH,
+        Language.PORTUGUESE,
+        Language.SPANISH};
 
     // Client handler
     private Handler handler;
@@ -80,7 +84,7 @@ public class ChatWindow extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jEnterButton = new javax.swing.JButton();
         jEnterTheLanguagePanel = new javax.swing.JPanel();
-        jClientLanguageComboBox = new javax.swing.JComboBox(languages);
+        jClientLanguageComboBox = new javax.swing.JComboBox(languagesSTR);
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jEnterButton1 = new javax.swing.JButton();
@@ -319,7 +323,7 @@ public class ChatWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jEnterButtonActionPerformed
 
     private void jEnterButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEnterButton1ActionPerformed
-        this.handler.setLanguage(jClientLanguageComboBox.getSelectedIndex());
+        this.handler.setLanguage(languages[jClientLanguageComboBox.getSelectedIndex()]);
         card.show(jMainPanel, CHAT);
         jMessageTextField.requestFocusInWindow();
     }//GEN-LAST:event_jEnterButton1ActionPerformed

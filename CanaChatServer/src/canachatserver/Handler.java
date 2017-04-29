@@ -16,7 +16,6 @@ import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.model.TranslationsListResponse;
 import com.google.api.services.translate.model.TranslationsResource;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 
 /**
  * A handler thread class. Handlers are spawned from the listening loop and are
@@ -136,6 +135,7 @@ public class Handler extends Thread {
                                 Arrays.asList(input),
                                 //Target language
                                 writer.getValue());
+                        System.out.println(writer.getValue());
                         // Google Cloud API
                         list.setKey(APIKEY.GOOGLE_APPLICATION_CREDENTIALS);
                         // Translate message
