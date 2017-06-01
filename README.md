@@ -3,9 +3,17 @@
 
 ## Description
 
-Cana is a simple multi-user chat and works as follows: each user chooses a language that wants to receive the messages (just portuguese, english and spanish are supported in this version) and the server will request the translations and send to the users according to with the language of chose. This projects uses the Google Translator API to do the translations.
+Cana is a simple multi-user chat and works as follows: each user chooses a language that wants to receive the messages and the server will request the translations and send to the users according to with the language of chose. This projects uses the Google Translator API to do the translations.
 
 This project for the Computer Networks course from the Federal University of Rio Grande do Norte (UFRN).
+
+### Supported Languages
+
+- Portuguese
+- English
+- Spanish
+- German
+- French
 
 ## How to compile
 
@@ -25,7 +33,7 @@ To generate the jar executable run the following command:
 To compile the chat client enter the following command:
 
 	cd CanaChat
-	javac  src/canachat/*.java
+	javac src/canachat/*.java
 
 To generate the jar executable run the following command:
 
@@ -41,24 +49,16 @@ And to run the chat client:
 
 	java -jar dist/CanaChat.jar
 
-#### 1. Enter the IP address of the server:
+### Enter the chat
 
-<p align="center"><img src ="img/chat-i.png" width="350px"/></p>
+<p align="center"><img src ="img/entering-chat.gif" width="400px"></p>
 
-#### 2. Enter the client name:
+## Sample
 
-<p align="center"><img src ="img/chat-ii.png" width="350px"/></p>
+### Client side
 
-#### 3. Enter the language:
+<p align="center"><img src ="img/conversation.gif"/></p>
 
-<p align="center"><img src ="img/chat-iii.png" width="350px"/></p>
+### Server side
 
-## Preview
-
-<!-- <p align="center"><img src ="img/chat-sample-i.png" width="350px"/></p><p align="center"><img src ="img/chat-sample-ii.png" width="350px"/></p> -->
-
-![](img/chat-sample-i.png) ![](img/chat-sample-ii.png)
-
-![](img/chat-sample-iii.png) ![](img/chat-sample-iv.png)
-
-![](img/chat-sample-v.png) ![](img/chat-sample-vi.png)
+<p align="center"><img src ="img/server-iii.png" width="600px"/></p>
