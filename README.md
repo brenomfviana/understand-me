@@ -19,9 +19,12 @@ This project for the Computer Networks course from the Federal University of Rio
 
 #### Server
 
-To compile the chat server enter the following command:
+Open the project folder:
 
 	cd CanaChatServer
+
+To compile the chat server enter the following command:
+
 	javac -cp lib/*.jar src/canachatserver/*.java
 
 To generate the jar executable run the following command:
@@ -30,9 +33,12 @@ To generate the jar executable run the following command:
 
 #### Client
 
-To compile the chat client enter the following command:
+Open the project folder:
 
 	cd CanaChat
+
+To compile the chat client enter the following command:
+
 	javac src/canachat/*.java
 
 To generate the jar executable run the following command:
