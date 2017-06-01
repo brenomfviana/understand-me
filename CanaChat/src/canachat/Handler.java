@@ -14,7 +14,7 @@ import java.io.IOException;
 public class Handler {
 
     // Client
-    Client client;
+    private Client client;
 
     /**
      * Constructor of client handler.
@@ -63,6 +63,8 @@ public class Handler {
 
     /**
      * Run the chat client.
+     *
+     * @throws java.io.IOException Error while receiving or sending messages
      */
     public void run() throws IOException {
         this.client.run();

@@ -39,7 +39,7 @@ public class Client {
     // Chat GUI
     private ChatWindow frame;
     // Client handler
-    private Handler handler;
+    private final Handler handler;
 
     // Server Address
     private String serverAddress;
@@ -83,7 +83,7 @@ public class Client {
      * @return Client language.
      */
     public Language getLanguage() {
-        return language;
+        return this.language;
     }
 
     /**
@@ -119,6 +119,7 @@ public class Client {
      * @param message Received message
      */
     public void printMessage(String message) {
+        this.frame.getJMessageArea().append("You: " + message + "\n");
         this.out.println(message);
     }
 
@@ -154,10 +155,8 @@ public class Client {
         }
 
         /* Display the chat window. */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                frame.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            frame.setVisible(true);
         });
     }
 

@@ -17,10 +17,10 @@ import javax.swing.JTextField;
 public class ChatWindow extends javax.swing.JFrame {
 
     // Cards names
-    private final String CHAT_SERVER_LOG_ON = "CHAT_SERVER_IP_ADDRESS";
-    private final String CHOOSE_CLENT_NAME = "CHOOSE_CLENT_NAME";
-    private final String CHOOSE_CLENT_LANGUAGE = "CHOOSE_CLENT_LANGUAGE";
-    private final String CHAT = "CHAT";
+    private final static String CHAT_SERVER_LOG_ON = "CHAT_SERVER_IP_ADDRESS";
+    private final static String CHOOSE_CLENT_NAME = "CHOOSE_CLENT_NAME";
+    private final static String CHOOSE_CLENT_LANGUAGE = "CHOOSE_CLENT_LANGUAGE";
+    private final static String CHAT = "CHAT";
 
     // Languages 
     private final String[] languagesSTR = {
@@ -55,10 +55,10 @@ public class ChatWindow extends javax.swing.JFrame {
         // Init card layout
         this.card = new CardLayout();
         this.jMainPanel.setLayout(this.card);
-        this.jMainPanel.add(jLogOnServerPanel, CHAT_SERVER_LOG_ON);
-        this.jMainPanel.add(jEnterTheNamePanel, CHOOSE_CLENT_NAME);
-        this.jMainPanel.add(jEnterTheLanguagePanel, CHOOSE_CLENT_LANGUAGE);
-        this.jMainPanel.add(jChatPanel, CHAT);
+        this.jMainPanel.add(this.jLogOnServerPanel, this.CHAT_SERVER_LOG_ON);
+        this.jMainPanel.add(this.jEnterTheNamePanel, this.CHOOSE_CLENT_NAME);
+        this.jMainPanel.add(this.jEnterTheLanguagePanel, this.CHOOSE_CLENT_LANGUAGE);
+        this.jMainPanel.add(this.jChatPanel, CHAT);
     }
 
     public JTextField getJMessageTextField() {
@@ -310,38 +310,38 @@ public class ChatWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMessageTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMessageTextFieldActionPerformed
-        handler.setOut(jMessageTextField.getText());
-        jMessageTextField.setText("");
+        this.handler.setOut(this.jMessageTextField.getText());
+        this.jMessageTextField.setText("");
     }//GEN-LAST:event_jMessageTextFieldActionPerformed
 
     private void jLogInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLogInButtonActionPerformed
-        this.handler.setIPAddress(jIPAddressTextField.getText());
-        card.show(jMainPanel, CHOOSE_CLENT_NAME);
-        jClientNameTextField.requestFocusInWindow();
+        this.handler.setIPAddress(this.jIPAddressTextField.getText());
+        this.card.show(this.jMainPanel, CHOOSE_CLENT_NAME);
+        this.jClientNameTextField.requestFocusInWindow();
     }//GEN-LAST:event_jLogInButtonActionPerformed
 
     private void jEnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEnterButtonActionPerformed
-        this.handler.setName(jClientNameTextField.getText());
-        card.show(jMainPanel, CHOOSE_CLENT_LANGUAGE);
-        jClientLanguageComboBox.requestFocusInWindow();
+        this.handler.setName(this.jClientNameTextField.getText());
+        this.card.show(this.jMainPanel, CHOOSE_CLENT_LANGUAGE);
+        this.jClientLanguageComboBox.requestFocusInWindow();
     }//GEN-LAST:event_jEnterButtonActionPerformed
 
     private void jEnterButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEnterButton1ActionPerformed
-        this.handler.setLanguage(languages[jClientLanguageComboBox.getSelectedIndex()]);
-        card.show(jMainPanel, CHAT);
-        jMessageTextField.requestFocusInWindow();
+        this.handler.setLanguage(this.languages[this.jClientLanguageComboBox.getSelectedIndex()]);
+        this.card.show(this.jMainPanel, CHAT);
+        this.jMessageTextField.requestFocusInWindow();
     }//GEN-LAST:event_jEnterButton1ActionPerformed
 
     private void jIPAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jIPAddressTextFieldActionPerformed
-        this.handler.setIPAddress(jIPAddressTextField.getText());
-        card.show(jMainPanel, CHOOSE_CLENT_NAME);
-        jClientNameTextField.requestFocusInWindow();
+        this.handler.setIPAddress(this.jIPAddressTextField.getText());
+        this.card.show(this.jMainPanel, CHOOSE_CLENT_NAME);
+        this.jClientNameTextField.requestFocusInWindow();
     }//GEN-LAST:event_jIPAddressTextFieldActionPerformed
 
     private void jClientNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jClientNameTextFieldActionPerformed
-        this.handler.setName(jClientNameTextField.getText());
-        card.show(jMainPanel, CHOOSE_CLENT_LANGUAGE);
-        jClientLanguageComboBox.requestFocusInWindow();
+        this.handler.setName(this.jClientNameTextField.getText());
+        this.card.show(this.jMainPanel, CHOOSE_CLENT_LANGUAGE);
+        this.jClientLanguageComboBox.requestFocusInWindow();
     }//GEN-LAST:event_jClientNameTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
