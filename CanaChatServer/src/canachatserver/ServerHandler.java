@@ -16,6 +16,7 @@ import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.model.TranslationsListResponse;
 import com.google.api.services.translate.model.TranslationsResource;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import java.util.AbstractMap;
 
 /**
  * A handler thread class. Handlers are spawned from the listening loop and are
@@ -31,7 +32,7 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
  * @author Breno Viana
  * @version 24/04/2017
  */
-public class Handler extends Thread {
+public class ServerHandler extends Thread {
 
     // Receive client messages
     private BufferedReader in;
@@ -56,7 +57,8 @@ public class Handler extends Thread {
      * The set of all the print writers for all the clients. This set is kept so
      * we can easily broadcast messages.
      */
-    private static HashMap<PrintWriter, String> writers = new HashMap<PrintWriter, String>();
+    private static HashMap<PrintWriter, HashMap.Entry<String, String>> writers
+            = new HashMap<PrintWriter, HashMap.Entry<String, String>>();
 
     /**
      * Constructs a handler thread, squirreling away the socket. All the
@@ -64,7 +66,7 @@ public class Handler extends Thread {
      *
      * @param socket Server socket
      */
-    public Handler(Socket socket) {
+    public ServerHandler(Socket socket) {
         this.socket = socket;
     }
 
@@ -78,9 +80,9 @@ public class Handler extends Thread {
     public void run() {
         try {
             // Create character streams for the socket.
-            in = new BufferedReader(new InputStreamReader(
-                    socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(), true);
+            this.in = new BufferedReader(new InputStreamReader(
+                    this.socket.getInputStream()));
+            this.out = new PrintWriter(this.socket.getOutputStream(), true);
 
             // Request a name from this client.  Keep requesting until
             // a name is submitted that is not already used.  Note that
@@ -88,17 +90,17 @@ public class Handler extends Thread {
             // must be done while locking the set of names.
             while (true) {
                 // Get name and language of the client
-                out.println("SUBMITNAME");
-                name = in.readLine();
-                language = in.readLine();
+                this.out.println("SUBMITNAME");
+                this.name = this.in.readLine();
+                this.language = this.in.readLine();
                 // Check if is a valid value
-                if (name == null) {
+                if (this.name == null) {
                     return;
                 }
                 // Adds the client to chat
-                synchronized (names) {
-                    if (!names.keySet().contains(name)) {
-                        names.put(name, language);
+                synchronized (this.names) {
+                    if (!this.names.values().contains(this.name)) {
+                        this.names.put(this.name, this.language);
                         break;
                     }
                 }
@@ -107,47 +109,64 @@ public class Handler extends Thread {
             // Now that a successful name has been chosen, add the
             // socket's print writer to the set of all writers so
             // this client can receive broadcast messages.
-            out.println("NAMEACCEPTED");
-            writers.put(out, language);
+            this.out.println("NAMEACCEPTED");
+            this.writers.put(this.out,
+                    (new AbstractMap.SimpleEntry<String, String>(this.name,
+                            this.language)));
 
             // Accept messages from this client and broadcast them.
             // Ignore other clients that cannot be broadcasted to.
             while (true) {
                 // Get message
-                String input = in.readLine();
+                String input = this.in.readLine();
                 // Check if the message is valid
                 if (input == null) {
                     return;
                 }
                 // Send message to all chat clients and translate to respective
                 // language
-                for (Map.Entry<PrintWriter, String> writer : writers.entrySet()) {
-                    try {
-                        // Initialize the translator
-                        Translate t = new Translate.Builder(
-                                GoogleNetHttpTransport.newTrustedTransport(),
-                                GsonFactory.getDefaultInstance(), null)
-                                // Need to update this to your App-Name
-                                .setApplicationName("CanaChat")
-                                .build();
-                        // Prepare to translate
-                        Translate.Translations.List list = t.new Translations().list(
-                                Arrays.asList(input),
-                                //Target language
-                                writer.getValue());
-                        System.out.println(writer.getValue());
-                        // Google Cloud API
-                        list.setKey(APIKEY.GOOGLE_APPLICATION_CREDENTIALS);
-                        // Translate message
-                        TranslationsListResponse response = list.execute();
-                        // Send messages
-                        for (TranslationsResource tr : response.getTranslations()) {
-                            writer.getKey().println("MESSAGE " + name + ": " + tr.getTranslatedText());
-                            System.out.println("Sent by: " + name);
-                            System.out.println("Message: " + tr.getTranslatedText());
+                for (Map.Entry<PrintWriter, HashMap.Entry<String, String>> writer
+                        : this.writers.entrySet()) {
+                    // Check 
+                    if (writer.getValue().getKey().equals(this.name)) {
+                        continue;
+                    }
+                    // Checks if the language of this client is the same as the
+                    // client that sent the message
+                    if (!writer.getValue().getValue().equals(this.language)) {
+                        try {
+                            // Initialize the translator
+                            Translate t = new Translate.Builder(
+                                    GoogleNetHttpTransport.newTrustedTransport(),
+                                    GsonFactory.getDefaultInstance(), null)
+                                    // Need to update this to your App-Name
+                                    .setApplicationName("CanaChat")
+                                    .build();
+                            // Prepare to translate
+                            Translate.Translations.List list = t.new Translations().list(
+                                    Arrays.asList(input),
+                                    //Target language
+                                    writer.getValue().getValue());
+                            System.out.println(writer.getValue());
+                            // Google Cloud API
+                            list.setKey(APIKEY.GOOGLE_APPLICATION_CREDENTIALS);
+                            // Translate message
+                            TranslationsListResponse response = list.execute();
+                            // Send messages
+                            for (TranslationsResource tr : response.getTranslations()) {
+                                writer.getKey().println("MESSAGE " + this.name + ": " + tr.getTranslatedText());
+                                System.out.println("Sent by: " + this.name);
+                                System.out.println("Message: " + tr.getTranslatedText());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } else {
+                        try {
+                            writer.getKey().println("MESSAGE " + this.name + ": " + input);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -156,14 +175,14 @@ public class Handler extends Thread {
         } finally {
             // This client is going down!  Remove its name and its print
             // writer from the sets, and close its socket.
-            if (name != null) {
-                names.remove(name);
+            if (this.name != null) {
+                this.names.remove(this.name);
             }
-            if (out != null) {
-                writers.remove(out);
+            if (this.out != null) {
+                this.writers.remove(this.out);
             }
             try {
-                socket.close();
+                this.socket.close();
             } catch (IOException e) {
             }
         }

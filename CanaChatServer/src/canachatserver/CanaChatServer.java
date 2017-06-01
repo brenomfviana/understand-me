@@ -33,7 +33,7 @@ public class CanaChatServer {
             ServerSocket listener = new ServerSocket(PORT);
             // Run
             while (true) {
-                new Handler(listener.accept()).start();
+                new ServerHandler(listener.accept()).start();
             }
         } catch (IOException ex) {
             // Error message
