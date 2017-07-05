@@ -13,6 +13,9 @@ import java.io.IOException;
  */
 public class Handler {
 
+    // Invalid name
+    public static final String INVALID_NAME = " INVALID ";
+
     // Client
     private final Client client;
 

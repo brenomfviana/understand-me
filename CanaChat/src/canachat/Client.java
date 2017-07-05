@@ -128,7 +128,6 @@ public class Client {
      * Initialize the chat window.
      */
     public void layout() {
-
         /* Set the GTK look and feel */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info
@@ -143,6 +142,7 @@ public class Client {
             // Error
             java.util.logging.Logger.getLogger(ChatWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        
         // Layout
         this.frame = new ChatWindow(this.handler);
 

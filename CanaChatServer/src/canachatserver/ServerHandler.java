@@ -17,6 +17,9 @@ import com.google.api.services.translate.model.TranslationsListResponse;
 import com.google.api.services.translate.model.TranslationsResource;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import java.util.AbstractMap;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A handler thread class. Handlers are spawned from the listening loop and are
@@ -84,10 +87,10 @@ public class ServerHandler extends Thread {
                     this.socket.getInputStream()));
             this.out = new PrintWriter(this.socket.getOutputStream(), true);
 
-            // Request a name from this client.  Keep requesting until
-            // a name is submitted that is not already used.  Note that
-            // checking for the existence of a name and adding the name
-            // must be done while locking the set of names.
+            // Request a name from this client. Keep requesting until a name is 
+            // submitted that is not already used. Note that checking for the 
+            // existence of a name and adding the name must be done while 
+            // locking the set of names.
             while (true) {
                 // Get name and language of the client
                 this.out.println("SUBMITNAME");
@@ -106,9 +109,9 @@ public class ServerHandler extends Thread {
                 }
             }
 
-            // Now that a successful name has been chosen, add the
-            // socket's print writer to the set of all writers so
-            // this client can receive broadcast messages.
+            // Now that a successful name has been chosen, add the socket's
+            // print writer to the set of all writers so this client can receive
+            // broadcast messages.
             this.out.println("NAMEACCEPTED");
             this.writers.put(this.out,
                     (new AbstractMap.SimpleEntry<String, String>(this.name,

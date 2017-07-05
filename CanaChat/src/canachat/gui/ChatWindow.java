@@ -8,7 +8,12 @@ package canachat.gui;
 import canachat.Handler;
 import canachat.Language;
 import java.awt.CardLayout;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -20,8 +25,8 @@ public class ChatWindow extends JFrame {
 
     // Cards names
     private final static String CHAT_SERVER_LOG_ON = "CHAT_SERVER_IP_ADDRESS";
-    private final static String CHOOSE_CLENT_NAME = "CHOOSE_CLENT_NAME";
-    private final static String CHOOSE_CLENT_LANGUAGE = "CHOOSE_CLENT_LANGUAGE";
+    private final static String CHOOSE_CLIENT_NAME = "CHOOSE_CLENT_NAME";
+    private final static String CHOOSE_CLIENT_LANGUAGE = "CHOOSE_CLENT_LANGUAGE";
     private final static String CHAT = "CHAT";
 
     // Languages
@@ -58,8 +63,8 @@ public class ChatWindow extends JFrame {
         this.card = new CardLayout();
         this.jMainPanel.setLayout(this.card);
         this.jMainPanel.add(this.jLogOnServerPanel, CHAT_SERVER_LOG_ON);
-        this.jMainPanel.add(this.jEnterTheNamePanel, CHOOSE_CLENT_NAME);
-        this.jMainPanel.add(this.jEnterTheLanguagePanel, CHOOSE_CLENT_LANGUAGE);
+        this.jMainPanel.add(this.jEnterTheNamePanel, CHOOSE_CLIENT_NAME);
+        this.jMainPanel.add(this.jEnterTheLanguagePanel, CHOOSE_CLIENT_LANGUAGE);
         this.jMainPanel.add(this.jChatPanel, CHAT);
     }
 
@@ -98,7 +103,7 @@ public class ChatWindow extends JFrame {
         jChatPanel = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jMessageTextField = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jSendButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jMessageTextArea = new javax.swing.JTextArea();
         jMainPanel = new javax.swing.JPanel();
@@ -106,7 +111,7 @@ public class ChatWindow extends JFrame {
         jLogOnServerPanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
         jIcon0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jIcon0.setText("Cana Chat");
+        jIcon0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachat/gui/img/cana-icon-logo.png"))); // NOI18N
 
         jLabel1.setText("Enter IP Address of the Server:");
 
@@ -153,7 +158,7 @@ public class ChatWindow extends JFrame {
         jEnterTheNamePanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
         jIcon1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jIcon1.setText("Cana Chat");
+        jIcon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachat/gui/img/cana-icon-logo.png"))); // NOI18N
 
         jLabel2.setText("Enter the your name or what do you want to be called:");
 
@@ -197,7 +202,7 @@ public class ChatWindow extends JFrame {
         jEnterTheLanguagePanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
         jIcon2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jIcon2.setText("Cana Chat");
+        jIcon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachat/gui/img/cana-icon-logo.png"))); // NOI18N
 
         jLabel3.setText("Choose a language:");
 
@@ -238,7 +243,7 @@ public class ChatWindow extends JFrame {
         jChatPanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Cana");
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachat/gui/img/cana-icon-logo-50px.png"))); // NOI18N
 
         jMessageTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -246,10 +251,10 @@ public class ChatWindow extends JFrame {
             }
         });
 
-        jButton1.setText("Send");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jSendButton.setText("Send");
+        jSendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jSendButtonActionPerformed(evt);
             }
         });
 
@@ -266,7 +271,7 @@ public class ChatWindow extends JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jMessageTextField)
                 .addGap(0, 0, 0)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jSendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         jChatPanelLayout.setVerticalGroup(
@@ -275,7 +280,7 @@ public class ChatWindow extends JFrame {
                 .addGroup(jChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jMessageTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jSendButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
         );
@@ -311,25 +316,25 @@ public class ChatWindow extends JFrame {
 
     private void jConnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConnectButtonActionPerformed
         this.handler.setIPAddress(this.jIPAddressTextField.getText());
-        this.card.show(this.jMainPanel, CHOOSE_CLENT_NAME);
+        this.card.show(this.jMainPanel, CHOOSE_CLIENT_NAME);
         this.jClientNameTextField.requestFocusInWindow();
     }//GEN-LAST:event_jConnectButtonActionPerformed
 
     private void jIPAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jIPAddressTextFieldActionPerformed
         this.handler.setIPAddress(this.jIPAddressTextField.getText());
-        this.card.show(this.jMainPanel, CHOOSE_CLENT_NAME);
+        this.card.show(this.jMainPanel, CHOOSE_CLIENT_NAME);
         this.jClientNameTextField.requestFocusInWindow();
     }//GEN-LAST:event_jIPAddressTextFieldActionPerformed
 
     private void jClientNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jClientNameTextFieldActionPerformed
         this.handler.setName(this.jClientNameTextField.getText());
-        this.card.show(this.jMainPanel, CHOOSE_CLENT_LANGUAGE);
+        this.card.show(this.jMainPanel, CHOOSE_CLIENT_LANGUAGE);
         this.jClientLanguageComboBox.requestFocusInWindow();
     }//GEN-LAST:event_jClientNameTextFieldActionPerformed
 
     private void jConfirmNameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmNameButtonActionPerformed
         this.handler.setName(this.jClientNameTextField.getText());
-        this.card.show(this.jMainPanel, CHOOSE_CLENT_LANGUAGE);
+        this.card.show(this.jMainPanel, CHOOSE_CLIENT_LANGUAGE);
         this.jClientLanguageComboBox.requestFocusInWindow();
     }//GEN-LAST:event_jConfirmNameButtonActionPerformed
 
@@ -339,10 +344,10 @@ public class ChatWindow extends JFrame {
         this.jMessageTextField.requestFocusInWindow();
     }//GEN-LAST:event_jConfirmLanguageButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jSendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSendButtonActionPerformed
         this.handler.setOut(this.jMessageTextField.getText());
         this.jMessageTextField.setText("");
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jSendButtonActionPerformed
 
     private void jMessageTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMessageTextFieldActionPerformed
         this.handler.setOut(this.jMessageTextField.getText());
@@ -350,7 +355,6 @@ public class ChatWindow extends JFrame {
     }//GEN-LAST:event_jMessageTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jChatPanel;
     private javax.swing.JComboBox<String> jClientLanguageComboBox;
     private javax.swing.JTextField jClientNameTextField;
@@ -372,5 +376,6 @@ public class ChatWindow extends JFrame {
     private javax.swing.JTextArea jMessageTextArea;
     private javax.swing.JTextField jMessageTextField;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jSendButton;
     // End of variables declaration//GEN-END:variables
 }
