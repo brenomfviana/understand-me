@@ -9,12 +9,12 @@ import java.io.IOException;
  * Client Handler.
  *
  * @author Breno Viana
- * @version 24/04/2017
+ * @version 04/07/2017
  */
 public class Handler {
 
     // Client
-    private Client client;
+    private final Client client;
 
     /**
      * Constructor of client handler.

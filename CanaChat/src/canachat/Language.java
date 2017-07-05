@@ -7,27 +7,32 @@ package canachat;
  * Supported languages.
  *
  * @author Breno Viana
- * @version 24/04/2017
+ * @version 04/07/2017
  */
 public enum Language {
 
-    UNKNOW(""),
-    ENGLISH("EN"),
-    PORTUGUESE("PT"),
-    SPANISH("ES"),
-    FRENCH("FR"),
-    GERMAN("DE");
+    UNKNOW("", ""),
+    ENGLISH("EN", "English"),
+    PORTUGUESE("PT", "Português"),
+    SPANISH("ES", "Español"),
+    FRENCH("FR", "Français"),
+    GERMAN("DE", "Deutsch");
 
     // Language ID
-    private String value;
+    private String id;
+
+    // Language Name
+    private String name;
 
     /**
      * Constructor.
      *
-     * @param value Language ID
+     * @param id Language ID
+     * @param name Language Name
      */
-    private Language(String value) {
-        this.value = value;
+    private Language(String id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     /**
@@ -35,8 +40,16 @@ public enum Language {
      *
      * @return Language ID
      */
-    public String getValue() {
-        return value;
+    public String getLanguageID() {
+        return this.id;
+    }
+
+    /**
+     * Get language name.
+     *
+     * @return Language name
+     */
+    public String getName() {
+        return this.name;
     }
 }
-

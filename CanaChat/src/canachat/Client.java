@@ -3,6 +3,7 @@
  */
 package canachat;
 
+import canachat.gui.ChatWindow;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,17 +14,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * A simple client for the chat server.
  *
- * The client follows the Chat Protocol which is as follows. When the server
- * sends "SUBMITNAME" the client replies with the desired screen name. The
- * server will keep sending "SUBMITNAME" requests as long as the client submits
- * screen names that are already in use. When the server sends a line beginning
- * with "NAMEACCEPTED" the client is now allowed to start sending the server
- * arbitrary strings to be broadcast to all chatters connected to the server.
- * When the server sends a line beginning with "MESSAGE" then all characters
- * following this string should be displayed in its message area.
- *
  * @author Breno Viana
- * @version 24/04/2017
+ * @version 04/07/2017
  */
 public class Client {
 
@@ -136,10 +128,8 @@ public class Client {
      * Initialize the chat window.
      */
     public void layout() {
-        // Layout
-        this.frame = new ChatWindow(this.handler);
 
-        /* Set the Nimbus look and feel */
+        /* Set the GTK look and feel */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info
                     : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -153,6 +143,8 @@ public class Client {
             // Error
             java.util.logging.Logger.getLogger(ChatWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        // Layout
+        this.frame = new ChatWindow(this.handler);
 
         /* Display the chat window. */
         java.awt.EventQueue.invokeLater(() -> {
@@ -187,7 +179,7 @@ public class Client {
                 socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
         // Send your name to server
-        this.out.println(getName() + "\n" + getLanguage().getValue());
+        this.out.println(getName() + "\n" + getLanguage().getLanguageID());
         // Update title
         this.frame.setTitle("CanaChat: " + getName());
 
