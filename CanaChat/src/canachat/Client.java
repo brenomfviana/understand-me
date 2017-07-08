@@ -3,19 +3,22 @@
  */
 package canachat;
 
-import canachat.gui.ChatWindow;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A simple client for the chat server.
  *
  * @author Breno Viana
- * @version 04/07/2017
+ * @version 07/07/2017
  */
 public class Client {
 
@@ -28,10 +31,13 @@ public class Client {
     private String name;
     // Client language
     private Language language;
-    // Chat GUI
-    private ChatWindow frame;
-    // Client handler
-    private final Handler handler;
+    // True if the client is ready
+    private boolean ready;
+    // Conversation
+    private String conversation;
+
+    // Lock
+    private Lock lock = new ReentrantLock();
 
     // Server Address
     private String serverAddress;
@@ -41,32 +47,17 @@ public class Client {
      */
     public Client() {
         this.language = Language.UNKNOW;
-        this.handler = new Handler(this);
-    }
-
-    /**
-     * Get message delivery.
-     *
-     * @return Message delivery
-     */
-    public BufferedReader getIn() {
-        return this.in;
+        this.ready = false;
+        this.conversation = "";
     }
 
     /**
      * Get client name.
-     */
-    private String getName() {
-        return this.name;
-    }
-
-    /**
-     * Set the client name.
      *
-     * @param name Client name
+     * @return Client name
      */
-    public void setName(String name) {
-        this.name = name;
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -88,15 +79,6 @@ public class Client {
     }
 
     /**
-     * Get server address.
-     *
-     * @return Server address
-     */
-    public String getServerAddress() {
-        return this.serverAddress;
-    }
-
-    /**
      * Set the server address.
      *
      * @param serverAddress Server Address
@@ -106,95 +88,109 @@ public class Client {
     }
 
     /**
-     * Print the received messsages.
+     * Get conversation.
      *
-     * @param message Received message
+     * @return Conversation
      */
-    public void printMessage(String message) {
-        this.frame.getJMessageArea().append("You: " + message + "\n");
-        this.out.println(message);
+    public String getConversation() {
+        return conversation;
     }
 
     /**
-     * Get client handler.
+     * Check if the client is ready.
      *
-     * @return Client handler
+     * @return True if the client is ready
      */
-    public Handler getHandler() {
-        return this.handler;
+    public boolean isReady() {
+        return this.ready;
     }
 
     /**
-     * Initialize the chat window.
-     */
-    public void layout() {
-        /* Set the GTK look and feel */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info
-                    : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("GTK+".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                javax.swing.UnsupportedLookAndFeelException ex) {
-            // Error
-            java.util.logging.Logger.getLogger(ChatWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        
-        // Layout
-        this.frame = new ChatWindow(this.handler);
-
-        /* Display the chat window. */
-        java.awt.EventQueue.invokeLater(() -> {
-            frame.setVisible(true);
-        });
-    }
-
-    /**
-     * Start the chat client.
+     * Connects to the server and logs in the Cana Chat user.
+     *
+     * Explain.
+     *
+     * @param name Client name
      *
      * @throws java.lang.InterruptedException Thread was interrupted
-     */
-    public void start() throws InterruptedException {
-        // Initializes chat window
-        layout();
-        // Wait for config
-        while (this.language.equals(Language.UNKNOW)) {
-            TimeUnit.MILLISECONDS.sleep(10);
-        }
-    }
-
-    /**
-     * Connects to the server then enters the processing loop.
-     *
      * @throws java.io.IOException Error on socket
      */
-    public void run() throws IOException {
+    public void login(String name) throws InterruptedException, IOException {
         // Make connection
         Socket socket = new Socket(this.serverAddress, 9001);
         // Initialize streams
         this.in = new BufferedReader(new InputStreamReader(
                 socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
-        // Send your name to server
-        this.out.println(getName() + "\n" + getLanguage().getLanguageID());
-        // Update title
-        this.frame.setTitle("CanaChat: " + getName());
-
-        // Process all messages from server, according to the protocol.
-        while (true) {
-            // Get message
+        // Set name
+        this.name = name;
+        // Send your name and selected language to server
+        this.out.println("LOGIN\n" + getName() + "\n" + getLanguage().getLanguageID());
+        // Login attempts
+        for (int i = 0; ((i < 5) && (!this.ready)); i++) {
+            // Wait
+            TimeUnit.MILLISECONDS.sleep(10);
+            // Get server message
             String line = in.readLine();
             // Check protocol
-            if (line.startsWith("NAMEACCEPTED")) {
-                // Turn on sending messages
-                this.frame.getJMessageTextField().setEditable(true);
-            } else if (line.startsWith("MESSAGE")) {
-                // Print received messages
-                this.frame.getJMessageArea().append(line.substring(8) + "\n");
+            if (line.startsWith("SUBMITNAME")) {
+                // Send your name and selected language to server
+                this.out.println("LOGIN\n" + getName() + "\n" + getLanguage().getLanguageID());
+            } else if (line.startsWith("NAMEACCEPTED")) {
+                // The client is ready
+                this.ready = true;
             }
         }
+    }
+
+    /**
+     * Send message.
+     *
+     * @param message Message to be sent
+     */
+    public void sendMessage(String message) {
+        this.conversation = this.conversation.concat("You: " + message + "\n");
+        this.out.println("MESSAGE\n" + message);
+    }
+
+    /**
+     * Receive messages.
+     *
+     * Explain.
+     */
+    public void receiveMessages() {
+        Thread getMessages = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Receive messages
+                while (true) {
+                    try {
+                        // Wait
+                        TimeUnit.MILLISECONDS.sleep(10);
+                    } catch (InterruptedException ex) {
+                        System.err.println("Error in running CanaChat. Waiting time error.");
+                        Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    // Check if the client is ready
+                    if (ready) {
+                        try {
+                            // Get server message
+                            String line = in.readLine();
+                            // Check protocol
+                            if (line.startsWith("MESSAGE")) {
+                                lock.lock();
+                                // Print received messages
+                                conversation = conversation.concat(line.substring(8) + "\n");
+                                lock.unlock();
+                            }
+                        } catch (IOException ex) {
+                            System.err.println("Error in running CanaChat. The socket could not be created.");
+                            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }
+        });
+        getMessages.start();
     }
 }
