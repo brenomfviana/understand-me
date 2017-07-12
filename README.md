@@ -75,7 +75,7 @@ First, you need to enter the IP address, then the user should choose the languag
 
 ### Server side
 
-<p align="center"><img src ="img/server-iii.png" width="600px"/></p>
+<p align="center"><img src ="img/server.png" width="600px"/></p>
 
 ## Author
 
