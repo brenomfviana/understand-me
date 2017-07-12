@@ -14,6 +14,8 @@ This project for the Computer Networks course from the Federal University of Rio
 - Spanish
 - German
 - French
+- Italian
+- Dutch
 
 ## How to compile
 
