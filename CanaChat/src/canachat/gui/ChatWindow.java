@@ -34,13 +34,17 @@ public class ChatWindow extends JFrame {
         Language.PORTUGUESE,
         Language.SPANISH,
         Language.FRENCH,
-        Language.GERMAN};
+        Language.GERMAN,
+        Language.ITALIAN,
+        Language.DUTCH};
     private final String[] languagesName = {
         Language.ENGLISH.getName(),
         Language.PORTUGUESE.getName(),
         Language.SPANISH.getName(),
         Language.FRENCH.getName(),
-        Language.GERMAN.getName()};
+        Language.GERMAN.getName(),
+        Language.ITALIAN.getName(),
+        Language.DUTCH.getName()};
 
     // Client handler
     private final ClientHandler handler;

@@ -16,7 +16,9 @@ public enum Language {
     PORTUGUESE("PT", "Português"),
     SPANISH("ES", "Español"),
     FRENCH("FR", "Français"),
-    GERMAN("DE", "Deutsch");
+    GERMAN("DE", "Deutsch"),
+    ITALIAN("IT", "Italiano"),
+    DUTCH("NL", "Nederlands");
 
     // Language ID
     private String id;
