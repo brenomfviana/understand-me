@@ -4,7 +4,7 @@
 package canachat;
 
 /**
- * Cana chat main class.
+ * Cana Chat main class.
  *
  * @author Breno Viana
  * @version 07/07/2017

@@ -34,7 +34,7 @@ import java.util.AbstractMap;
  * @author Breno Viana
  * @version 12/07/2017
  */
-public class ServerHandler extends Thread {
+public class ChatHandler extends Thread {
 
     // Receive client messages
     private BufferedReader in;
@@ -68,7 +68,7 @@ public class ServerHandler extends Thread {
      *
      * @param socket Server socket
      */
-    public ServerHandler(Socket socket) {
+    public ChatHandler(Socket socket) {
         this.socket = socket;
     }
 

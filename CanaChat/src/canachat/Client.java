@@ -15,10 +15,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A simple client for the chat server.
+ * A simple client for the chat server. This chat follows the Chat Protocol
+ * which is explained in the documentation for the login and receiveMessages.
  *
  * @author Breno Viana
- * @version 07/07/2017
+ * @version 12/07/2017
  */
 public class Client {
 
@@ -106,9 +107,14 @@ public class Client {
     }
 
     /**
-     * Connects to the server and logs in the Cana Chat user.
-     *
-     * Explain.
+     * Connects to the server and logs in the Cana Chat user. The login is done
+     * by sending a message to the server containing the word "LOGIN", the name
+     * and language of the user. So the client waits for 10 milliseconds to
+     * respond to the server. (Chat Protocol) If the client receives the message
+     * "SUBMITNAME" means that the login could not be done, or the server did
+     * not receive the data or the name is not available. When the server sends
+     * "NAMEACCEPTED" it means that the login was successful and the client can
+     * start to chat.
      *
      * @param name Client name
      *
@@ -154,9 +160,10 @@ public class Client {
     }
 
     /**
-     * Receive messages.
-     *
-     * Explain.
+     * Receive messages. When the client is already logged in to the chat, he is
+     * then able to receive messages. Messages sent by the server must be
+     * preceded by the word "MESSAGE" and all subsequent characters form the
+     * message of another client.
      */
     public void receiveMessages() {
         Thread getMessages = new Thread(new Runnable() {

@@ -7,7 +7,7 @@ package canachat;
  * Supported languages.
  *
  * @author Breno Viana
- * @version 04/07/2017
+ * @version 12/07/2017
  */
 public enum Language {
 

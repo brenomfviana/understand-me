@@ -18,7 +18,7 @@ import javax.swing.JTextField;
  * Chat window. This class is responsible for the GUI.
  *
  * @author Breno Viana
- * @version 07/07/2017
+ * @version 12/07/2017
  */
 public class ChatWindow extends JFrame {
 

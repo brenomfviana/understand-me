@@ -23,7 +23,7 @@ public class CanaChatServer {
 
     /**
      * The appplication main method, which just listens on a port and spawns
-     * handler threads.
+     * chat handler threads.
      *
      * @param args Arguments
      */
@@ -33,9 +33,9 @@ public class CanaChatServer {
             System.out.println("The CanaChat server is running on port: " + PORT + ".");
             // Initialize server
             ServerSocket listener = new ServerSocket(PORT);
-            // Run server and create a thread to each client
+            // Run server and create a chat handler to each client
             while (true) {
-                new ServerHandler(listener.accept()).start();
+                new ChatHandler(listener.accept()).start();
             }
         } catch (IOException ex) {
             // Error message
