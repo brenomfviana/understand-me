@@ -27,39 +27,55 @@ The translation is made from the Translate API. The user sends the message to th
 
 Open the project folder:
 
-	cd CanaChatServer
+```bash
+cd CanaChatServer
+```
 
 To compile the chat server enter the following command:
 
-	javac -cp lib/*.jar src/canachatserver/*.java
+```bash
+javac -cp lib/*.jar src/canachatserver/*.java
+```
 
 To generate the jar executable run the following command:
 
-	jar cfm CanaChatServer.jar manifest.mf src/canachatserver/*.class
+```bash
+jar cfm CanaChatServer.jar manifest.mf src/canachatserver/*.class
+```
 
 #### Client
 
 Open the project folder:
 
-	cd CanaChat
+```bash
+cd CanaChat
+```
 
 To compile the chat client enter the following command:
 
-	javac src/canachat/*.java
+```bash
+javac src/canachat/*.java
+```
 
 To generate the jar executable run the following command:
 
-	jar cfm CanaChat.jar manifest.mf src/canachat/*.class
+```bash
+jar cfm CanaChat.jar manifest.mf src/canachat/*.class
+```
 
 ## How to use
 
 To run the chat server enter the following command:
 
-	java -jar CanaChatServer.jar
+```bash
+java -jar CanaChatServer.jar
+```
 
 And to run the chat client:
 
-	java -jar CanaChat.jar
+```bash
+java -jar CanaChat.jar
+```
 
 ### Enter the chat
 
