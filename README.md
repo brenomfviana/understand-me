@@ -48,19 +48,19 @@ jar cfm CanaChatServer.jar manifest.mf src/canachatserver/*.class
 Open the project folder:
 
 ```bash
-cd CanaChat
+cd CanaChatClient
 ```
 
 To compile the chat client enter the following command:
 
 ```bash
-javac src/canachat/*.java
+javac src/canachatclient/*.java
 ```
 
 To generate the jar executable run the following command:
 
 ```bash
-jar cfm CanaChat.jar manifest.mf src/canachat/*.class
+jar cfm CanaChatClient.jar manifest.mf src/canachatclient/*.class
 ```
 
 ## How to use
@@ -74,7 +74,7 @@ java -jar CanaChatServer.jar
 And to run the chat client:
 
 ```bash
-java -jar CanaChat.jar
+java -jar CanaChatClient.jar
 ```
 
 ### Enter the chat

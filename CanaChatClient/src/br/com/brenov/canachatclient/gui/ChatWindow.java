@@ -1,10 +1,10 @@
 /*
  * GNU License.
  */
-package canachat.gui;
+package br.com.brenov.canachatclient.gui;
 
-import canachat.ClientHandler;
-import canachat.Language;
+import br.com.brenov.canachatclient.ClientHandler;
+import br.com.brenov.canachatclient.Language;
 import java.awt.CardLayout;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -124,7 +124,7 @@ public class ChatWindow extends JFrame {
         jLogOnServerPanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
         jIcon0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jIcon0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachat/gui/img/cana-icon-logo.png"))); // NOI18N
+        jIcon0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachatclient/gui/img/cana-icon-logo.png"))); // NOI18N
 
         jLabel1.setText("Enter IP Address of the Server:");
 
@@ -171,7 +171,7 @@ public class ChatWindow extends JFrame {
         jEnterTheNamePanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
         jIcon1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jIcon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachat/gui/img/cana-icon-logo.png"))); // NOI18N
+        jIcon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachatclient/gui/img/cana-icon-logo.png"))); // NOI18N
 
         jLabel2.setText("Enter the your name or what do you want to be called:");
 
@@ -215,7 +215,7 @@ public class ChatWindow extends JFrame {
         jEnterTheLanguagePanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
         jIcon2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jIcon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachat/gui/img/cana-icon-logo.png"))); // NOI18N
+        jIcon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachatclient/gui/img/cana-icon-logo.png"))); // NOI18N
 
         jLabel3.setText("Choose a language:");
 
@@ -256,7 +256,7 @@ public class ChatWindow extends JFrame {
         jChatPanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachat/gui/img/cana-icon-logo-50px.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/canachatclient/gui/img/cana-icon-logo-50px.png"))); // NOI18N
 
         jMessageTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

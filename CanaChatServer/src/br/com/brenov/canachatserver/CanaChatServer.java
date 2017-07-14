@@ -1,7 +1,7 @@
 /*
  * GNU License.
  */
-package canachatserver;
+package br.com.brenov.canachatserver;
 
 import java.io.IOException;
 import java.net.ServerSocket;

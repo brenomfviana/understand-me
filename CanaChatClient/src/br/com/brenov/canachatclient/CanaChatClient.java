@@ -1,7 +1,7 @@
 /*
  * GNU License.
  */
-package canachat;
+package br.com.brenov.canachatclient;
 
 /**
  * Cana Chat main class.

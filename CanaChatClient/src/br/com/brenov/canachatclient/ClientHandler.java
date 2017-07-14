@@ -1,9 +1,9 @@
 /*
  * GNU License.
  */
-package canachat;
+package br.com.brenov.canachatclient;
 
-import canachat.gui.ChatWindow;
+import br.com.brenov.canachatclient.gui.ChatWindow;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
