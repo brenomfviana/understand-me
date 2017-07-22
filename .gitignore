@@ -1,11 +1,11 @@
-CanaChat/nbproject/
-CanaChat/build/
-CanaChat/dist/
-CanaChat/lib/CopyLibs/
 CanaChatServer/nbproject/
 CanaChatServer/dist/
-CanaChatServer/lib/CopyLibs/
 CanaChatServer/build/
+CanaChatServer/lib/CopyLibs/
+CanaChatClient/nbproject/
+CanaChatClient/dist/
+CanaChatClient/build/
+CanaChatClient/lib/CopyLibs/
 *.xml
 *.properties
 *.class
