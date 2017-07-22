@@ -1,10 +1,10 @@
 /*
  * GNU License.
  */
-package br.com.brenov.canachatclient.gui;
+package br.com.brenov.canachatclient.view;
 
-import br.com.brenov.canachatclient.ClientHandler;
-import br.com.brenov.canachatclient.Language;
+import br.com.brenov.canachatclient.model.Language;
+import br.com.brenov.canachatclient.control.ClientHandler;
 import java.awt.CardLayout;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -18,7 +18,7 @@ import javax.swing.JTextField;
  * Chat window. This class is responsible for the GUI.
  *
  * @author Breno Viana
- * @version 12/07/2017
+ * @version 22/07/2017
  */
 public class ChatWindow extends JFrame {
 
@@ -65,9 +65,12 @@ public class ChatWindow extends JFrame {
         // Init layout
         this.card = new CardLayout();
         this.jMainPanel.setLayout(this.card);
-        this.jMainPanel.add(this.jLogOnServerPanel, CHAT_SERVER_LOG_ON);
-        this.jMainPanel.add(this.jEnterTheNamePanel, CHOOSE_CLIENT_NAME);
-        this.jMainPanel.add(this.jEnterTheLanguagePanel, CHOOSE_CLIENT_LANGUAGE);
+        this.jMainPanel.add(this.jLogOnServerPanel,
+                CHAT_SERVER_LOG_ON);
+        this.jMainPanel.add(this.jEnterTheNamePanel,
+                CHOOSE_CLIENT_NAME);
+        this.jMainPanel.add(this.jEnterTheLanguagePanel,
+                CHOOSE_CLIENT_LANGUAGE);
         this.jMainPanel.add(this.jChatPanel, CHAT);
     }
 
@@ -87,6 +90,34 @@ public class ChatWindow extends JFrame {
      */
     public JTextArea getJMessagesTextArea() {
         return this.jMessagesTextArea;
+    }
+
+    private void login() {
+        try {
+            // Set name
+            this.handler.setName(this.jClientNameTextField.getText());
+            // Check if the client is ready
+            if (this.handler.isReady()) {
+                // Update screen
+                setTitle("CanaChat: " + this.handler.getName());
+                this.card.show(this.jMainPanel, CHAT);
+                this.jMessageTextField.requestFocusInWindow();
+            } else {
+                // Name already chosen error
+                JOptionPane.showMessageDialog(null, "This name has already "
+                        + "been chosen, please choose a new name.");
+            }
+        } catch (InterruptedException ex) {
+            System.err.println("Error in running CanaChat. "
+                    + "Waiting time error.");
+            Logger.getLogger(ChatWindow.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.err.println("Error in running CanaChat. "
+                    + "The socket could not be created.");
+            Logger.getLogger(ChatWindow.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -344,53 +375,17 @@ public class ChatWindow extends JFrame {
     }//GEN-LAST:event_jIPAddressTextFieldActionPerformed
 
     private void jClientNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jClientNameTextFieldActionPerformed
-        try {
-            // Set name
-            this.handler.setName(this.jClientNameTextField.getText());
-            // Check if the client is ready
-            if (this.handler.isReady()) {
-                // Change screen
-                setTitle("CanaChat: " + this.handler.getName());
-                this.card.show(this.jMainPanel, CHAT);
-                this.jMessageTextField.requestFocusInWindow();
-            } else {
-                // Name already chosen error
-                JOptionPane.showMessageDialog(null, "This name has already been chosen, please choose a new name.");
-            }
-        } catch (InterruptedException ex) {
-            System.err.println("Error in running CanaChat. Waiting time error.");
-            Logger.getLogger(ChatWindow.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            System.err.println("Error in running CanaChat. The socket could not be created.");
-            Logger.getLogger(ChatWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        login();
     }//GEN-LAST:event_jClientNameTextFieldActionPerformed
 
     private void jConfirmNameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmNameButtonActionPerformed
-        try {
-            // Set name
-            this.handler.setName(this.jClientNameTextField.getText());
-            // Check if the client is ready
-            if (this.handler.isReady()) {
-                // Change screen
-                this.card.show(this.jMainPanel, CHAT);
-                this.jMessageTextField.requestFocusInWindow();
-            } else {
-                // Name already chosen error
-                JOptionPane.showMessageDialog(null, "This name has already been chosen, please choose a new name.");
-            }
-        } catch (InterruptedException ex) {
-            System.err.println("Error in running CanaChat. Waiting time error.");
-            Logger.getLogger(ChatWindow.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            System.err.println("Error in running CanaChat. The socket could not be created.");
-            Logger.getLogger(ChatWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        login();
     }//GEN-LAST:event_jConfirmNameButtonActionPerformed
 
     private void jConfirmLanguageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmLanguageButtonActionPerformed
         // Set language
-        this.handler.setLanguage(this.languages[this.jClientLanguageComboBox.getSelectedIndex()]);
+        this.handler.setLanguage(this.languages[this.jClientLanguageComboBox
+                .getSelectedIndex()]);
         // Change screen
         this.card.show(this.jMainPanel, CHOOSE_CLIENT_NAME);
         this.jClientNameTextField.requestFocusInWindow();

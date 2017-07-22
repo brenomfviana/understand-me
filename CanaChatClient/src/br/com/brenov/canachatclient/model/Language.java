@@ -1,7 +1,7 @@
 /*
  * GNU License.
  */
-package br.com.brenov.canachatclient;
+package br.com.brenov.canachatclient.model;
 
 /**
  * Supported languages.

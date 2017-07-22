@@ -1,9 +1,11 @@
 /*
  * GNU License.
  */
-package br.com.brenov.canachatclient;
+package br.com.brenov.canachatclient.control;
 
-import br.com.brenov.canachatclient.gui.ChatWindow;
+import br.com.brenov.canachatclient.model.Client;
+import br.com.brenov.canachatclient.model.Language;
+import br.com.brenov.canachatclient.view.ChatWindow;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -101,8 +103,10 @@ public class ClientHandler {
                     // Wait
                     TimeUnit.MILLISECONDS.sleep(10);
                 } catch (InterruptedException ex) {
-                    System.err.println("Error in running CanaChat. Waiting time error.");
-                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                    System.err.println("Error in running CanaChat."
+                            + " Waiting time error.");
+                    Logger.getLogger(Client.class.getName())
+                            .log(Level.SEVERE, null, ex);
                 }
                 frame.getJMessagesTextArea().setText(client.getConversation());
             }
@@ -124,7 +128,8 @@ public class ClientHandler {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException |
-                IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+                IllegalAccessException |
+                javax.swing.UnsupportedLookAndFeelException ex) {
             // Error
             java.util.logging.Logger.getLogger(ChatWindow.class.getName())
                     .log(java.util.logging.Level.SEVERE, null, ex);

@@ -3,11 +3,14 @@
  */
 package br.com.brenov.canachatclient;
 
+import br.com.brenov.canachatclient.control.ClientHandler;
+import br.com.brenov.canachatclient.model.Client;
+
 /**
  * Cana Chat main class.
  *
  * @author Breno Viana
- * @version 07/07/2017
+ * @version 22/07/2017
  */
 public class CanaChatClient {
 
@@ -17,11 +20,7 @@ public class CanaChatClient {
      * @param args Arguments
      */
     public static void main(String[] args) {
-        // Create the client
-        Client client = new Client();
-        // Create the client handler
-        ClientHandler handler = new ClientHandler(client);
-        // Start client
-        handler.run();
+        // Create the client handler and starts client
+        (new ClientHandler(Client.getInstance())).run();
     }
 }

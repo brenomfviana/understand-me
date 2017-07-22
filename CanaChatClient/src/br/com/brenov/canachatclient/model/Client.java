@@ -1,7 +1,7 @@
 /*
  * GNU License.
  */
-package br.com.brenov.canachatclient;
+package br.com.brenov.canachatclient.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,9 +19,21 @@ import java.util.logging.Logger;
  * which is explained in the documentation for the login and receiveMessages.
  *
  * @author Breno Viana
- * @version 12/07/2017
+ * @version 22/07/2017
  */
 public class Client {
+
+    // Client instance
+    private static Client instance = new Client();
+
+    /**
+     * Get client instance.
+     *
+     * @return Client
+     */
+    public static Client getInstance() {
+        return instance;
+    }
 
     // Send messages
     private BufferedReader in;
@@ -46,7 +58,7 @@ public class Client {
     /**
      * Constructs the client.
      */
-    public Client() {
+    private Client() {
         this.language = Language.UNKNOW;
         this.ready = false;
         this.conversation = "";
@@ -131,7 +143,8 @@ public class Client {
         // Set name
         this.name = name;
         // Send your name and selected language to server
-        this.out.println("LOGIN\n" + getName() + "\n" + getLanguage().getLanguageID());
+        this.out.println("LOGIN\n" + getName() + "\n"
+                + getLanguage().getLanguageID());
         // Login attempts
         for (int i = 0; ((i < 5) && (!this.ready)); i++) {
             // Wait
@@ -141,7 +154,8 @@ public class Client {
             // Check protocol
             if (line.startsWith("SUBMITNAME")) {
                 // Send your name and selected language to server
-                this.out.println("LOGIN\n" + getName() + "\n" + getLanguage().getLanguageID());
+                this.out.println("LOGIN\n" + getName() + "\n"
+                        + getLanguage().getLanguageID());
             } else if (line.startsWith("NAMEACCEPTED")) {
                 // The client is ready
                 this.ready = true;
@@ -175,8 +189,10 @@ public class Client {
                         // Wait
                         TimeUnit.MILLISECONDS.sleep(10);
                     } catch (InterruptedException ex) {
-                        System.err.println("Error in running CanaChat. Waiting time error.");
-                        Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                        System.err.println("Error in running CanaChat. "
+                                + "Waiting time error.");
+                        Logger.getLogger(Client.class.getName())
+                                .log(Level.SEVERE, null, ex);
                     }
                     // Check if the client is ready
                     if (ready) {
@@ -187,12 +203,15 @@ public class Client {
                             if (line.startsWith("MESSAGE")) {
                                 lock.lock();
                                 // Print received messages
-                                conversation = conversation.concat(line.substring(8) + "\n");
+                                conversation = conversation
+                                        .concat(line.substring(8) + "\n");
                                 lock.unlock();
                             }
                         } catch (IOException ex) {
-                            System.err.println("Error in running CanaChat. The socket could not be created.");
-                            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                            System.err.println("Error in running CanaChat. "
+                                    + "The socket could not be created.");
+                            Logger.getLogger(Client.class.getName())
+                                    .log(Level.SEVERE, null, ex);
                         }
                     }
                 }
