@@ -1,13 +1,12 @@
-<p align="center"><img src ="img/cana-icon.png" width="450px"/></p>
-<p align="right"><sub>I created this icon just to learn a bit more how to use Inkscape.</sub></p>
+# Understand Me
 
 ## Description
 
-Cana is a multi-user chat in which the user chooses a language they want to talk to and all messages from different languages will be translated into the language that this user has chosen. Each user must have a unique name, both for the chat server and for users to identify themselves in the conversation.
+**Understand Me** is a multi-user chat in which the user chooses a language they want to talk to and all messages from different languages will be translated into the language that this user has chosen. Each user must have a unique name, both for the chat server and for users to identify themselves in the conversation.
 
 ### How it works?
 
-The translation is made from the Translate API. The user sends the message to the server that checks their language and applies the translation if necessary to send the message to each of the other users participating in the chat.
+The translation is made from the Google Translate API. The user sends the message to the server that checks their language and applies the translation if necessary to send the message to each of the other users participating in the chat.
 
 ### Supported Languages
 
@@ -23,24 +22,22 @@ The translation is made from the Translate API. The user sends the message to th
 
 #### Server
 
-**Warning**: The class with the API key has not been published to this repository.
-
 Open the project folder:
 
 ```bash
-cd CanaChatServer
+cd ChatServer
 ```
 
 To compile the chat server enter the following command:
 
 ```bash
-javac -cp lib/*.jar src/canachatserver/*.java
+javac -cp lib/*.jar src/br/com/brenov/chatserver/*.java
 ```
 
 To generate the jar executable run the following command:
 
 ```bash
-jar cfm CanaChatServer.jar manifest.mf src/canachatserver/*.class
+jar cfm ChatServer.jar manifest.mf src/br/com/brenov/chatserver/*.class
 ```
 
 #### Client
@@ -48,19 +45,19 @@ jar cfm CanaChatServer.jar manifest.mf src/canachatserver/*.class
 Open the project folder:
 
 ```bash
-cd CanaChatClient
+cd ChatClient
 ```
 
 To compile the chat client enter the following command:
 
 ```bash
-javac src/canachatclient/*.java
+javac src/br/com/brenov/chatclient/*.java
 ```
 
 To generate the jar executable run the following command:
 
 ```bash
-jar cfm CanaChatClient.jar manifest.mf src/canachatclient/*.class
+jar cfm ChatClient.jar manifest.mf src/br/com/brenov/chatclient/*.class
 ```
 
 ## How to use
@@ -68,13 +65,13 @@ jar cfm CanaChatClient.jar manifest.mf src/canachatclient/*.class
 To run the chat server enter the following command:
 
 ```bash
-java -jar CanaChatServer.jar
+java -jar ChatServer.jar $APIKEY
 ```
 
 And to run the chat client:
 
 ```bash
-java -jar CanaChatClient.jar
+java -jar ChatClient.jar
 ```
 
 ### Enter the chat
