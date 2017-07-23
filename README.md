@@ -2,7 +2,7 @@
 
 ## Description
 
-**Understand Me** is a multi-user chat in which the user chooses a language they want to talk to and all messages from different languages will be translated into the language that this user has chosen. Each user must have a unique name, both for the chat server and for users to identify themselves in the conversation.
+**Understand Me** is a multi-user chat that performs simultaneous translation. The user must choose a language in which to converse and all the messages received will be translated, if necessary, into the language that this user chose. Each user must have a unique name, both for the chat server and for users to identify themselves in the conversation.
 
 ### How it works?
 
