@@ -4,22 +4,14 @@
 package br.com.brenov.chatclient.model;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A simple client for the chat server. This chat follows the Chat Protocol
  * which is explained in the documentation for the login and receiveMessages.
  *
  * @author Breno Viana
- * @version 22/07/2017
+ * @version 23/07/2017
  */
 public class Client {
 
@@ -39,6 +31,8 @@ public class Client {
     private BufferedReader in;
     // Print messages
     private PrintWriter out;
+    // Server Address
+    private String serverAddress;
 
     // Client name
     private String name;
@@ -49,12 +43,6 @@ public class Client {
     // Conversation
     private String conversation;
 
-    // Lock
-    private Lock lock = new ReentrantLock();
-
-    // Server Address
-    private String serverAddress;
-
     /**
      * Constructs the client.
      */
@@ -62,6 +50,69 @@ public class Client {
         this.language = Language.UNKNOW;
         this.ready = false;
         this.conversation = "";
+    }
+
+    /**
+     * Get input reader.
+     *
+     * @return Input reader
+     */
+    public BufferedReader getIn() {
+        return in;
+    }
+
+    /**
+     * Set input reader.
+     *
+     * @param in Input reader
+     */
+    public void setIn(BufferedReader in) {
+        this.in = in;
+    }
+
+    /**
+     * Get output writer.
+     *
+     * @return Output writer.
+     */
+    public PrintWriter getOut() {
+        return out;
+    }
+
+    /**
+     * Set output writer.
+     *
+     * @param out Output writer
+     */
+    public void setOut(PrintWriter out) {
+        this.out = out;
+    }
+
+    /**
+     * Get the server address.
+     *
+     * @return Server Address
+     */
+    public String getServerAddress() {
+        return serverAddress;
+    }
+
+    /**
+     * Set the server address.
+     *
+     * @param serverAddress Server Address
+     */
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress = serverAddress;
+    }
+
+    /**
+     * Set client name.
+     *
+     * @param name Client name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -92,24 +143,6 @@ public class Client {
     }
 
     /**
-     * Set the server address.
-     *
-     * @param serverAddress Server Address
-     */
-    public void setServerAddress(String serverAddress) {
-        this.serverAddress = serverAddress;
-    }
-
-    /**
-     * Get conversation.
-     *
-     * @return Conversation
-     */
-    public String getConversation() {
-        return conversation;
-    }
-
-    /**
      * Check if the client is ready.
      *
      * @return True if the client is ready
@@ -119,104 +152,29 @@ public class Client {
     }
 
     /**
-     * Connects to the server and logs in the Cana Chat user. The login is done
-     * by sending a message to the server containing the word "LOGIN", the name
-     * and language of the user. So the client waits for 10 milliseconds to
-     * respond to the server. (Chat Protocol) If the client receives the message
-     * "SUBMITNAME" means that the login could not be done, or the server did
-     * not receive the data or the name is not available. When the server sends
-     * "NAMEACCEPTED" it means that the login was successful and the client can
-     * start to chat.
+     * Set ready status.
      *
-     * @param name Client name
-     *
-     * @throws java.lang.InterruptedException Thread was interrupted
-     * @throws java.io.IOException Error on socket
+     * @param ready If the client is ready
      */
-    public void login(String name) throws InterruptedException, IOException {
-        // Make connection
-        Socket socket = new Socket(this.serverAddress, 9001);
-        // Initialize streams
-        this.in = new BufferedReader(new InputStreamReader(
-                socket.getInputStream()));
-        this.out = new PrintWriter(socket.getOutputStream(), true);
-        // Set name
-        this.name = name;
-        // Send your name and selected language to server
-        this.out.println("LOGIN\n" + getName() + "\n"
-                + getLanguage().getLanguageID());
-        // Login attempts
-        for (int i = 0; ((i < 5) && (!this.ready)); i++) {
-            // Wait
-            TimeUnit.MILLISECONDS.sleep(10);
-            // Get server message
-            String line = in.readLine();
-            // Check protocol
-            if (line.startsWith("SUBMITNAME")) {
-                // Send your name and selected language to server
-                this.out.println("LOGIN\n" + getName() + "\n"
-                        + getLanguage().getLanguageID());
-            } else if (line.startsWith("NAMEACCEPTED")) {
-                // The client is ready
-                this.ready = true;
-            }
-        }
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 
     /**
-     * Send message.
+     * Get conversation.
      *
-     * @param message Message to be sent
+     * @return Conversation
      */
-    public void sendMessage(String message) {
-        this.conversation = this.conversation.concat("You: " + message + "\n");
-        this.out.println("MESSAGE\n" + message);
+    public String getConversation() {
+        return this.conversation;
     }
 
     /**
-     * Receive messages. When the client is already logged in to the chat, he is
-     * then able to receive messages. Messages sent by the server must be
-     * preceded by the word "MESSAGE" and all subsequent characters form the
-     * message of another client.
+     * Set conversation.
+     *
+     * @param conversation Conversation
      */
-    public void receiveMessages() {
-        Thread getMessages = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Receive messages
-                while (true) {
-                    try {
-                        // Wait
-                        TimeUnit.MILLISECONDS.sleep(10);
-                    } catch (InterruptedException ex) {
-                        System.err.println("Error in running CanaChat. "
-                                + "Waiting time error.");
-                        Logger.getLogger(Client.class.getName())
-                                .log(Level.SEVERE, null, ex);
-                    }
-                    // Check if the client is ready
-                    if (ready) {
-                        try {
-                            // Get server message
-                            String line = in.readLine();
-                            // Check protocol
-                            if (line.startsWith("MESSAGE")) {
-                                lock.lock();
-                                // Print received messages
-                                conversation = conversation
-                                        .concat(line.substring(8) + "\n");
-                                lock.unlock();
-                            }
-                        } catch (IOException ex) {
-                            System.err.println("Error in running CanaChat. "
-                                    + "The socket could not be created.");
-                            Logger.getLogger(Client.class.getName())
-                                    .log(Level.SEVERE, null, ex);
-                        }
-                    }
-                }
-            }
-        });
-        getMessages.start();
+    public void setConversation(String conversation) {
+        this.conversation = conversation;
     }
 }

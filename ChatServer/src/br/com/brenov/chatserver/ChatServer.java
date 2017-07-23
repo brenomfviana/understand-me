@@ -31,8 +31,8 @@ public class ChatServer {
     public static void main(String[] args) {
         try {
             // Server Log
-            System.out.println("The chat server is running on port: "
-                    + PORT + ".");
+            System.out.println("The Understand Me server is running on "
+                    + "port: " + PORT + ".");
             // Initialize server
             ServerSocket listener = new ServerSocket(PORT);
             // Run server and create a chat handler to each client
@@ -41,7 +41,7 @@ public class ChatServer {
             }
         } catch (IOException ex) {
             // Error message
-            System.err.println("Error in running ChatServer. "
+            System.err.println("Error in running Understand Me server. "
                     + "The socket could not be created.");
             Logger.getLogger(ChatServer.class.getName())
                     .log(Level.SEVERE, null, ex);

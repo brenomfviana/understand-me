@@ -11,14 +11,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 /**
  * Chat window. This class is responsible for the GUI.
  *
  * @author Breno Viana
- * @version 22/07/2017
+ * @version 23/07/2017
  */
 public class ChatWindow extends JFrame {
 
@@ -88,18 +88,46 @@ public class ChatWindow extends JFrame {
      *
      * @return The messages text area.
      */
-    public JTextArea getJMessagesTextArea() {
-        return this.jMessagesTextArea;
+    public JTextPane getJConversation() {
+        return this.jConversation;
     }
 
+    /**
+     * Set IP address of the server.
+     */
+    private void setIPAddress() {
+        if (!this.jIPAddressTextField.getText().equals("")) {
+            // Set server IP Address
+            this.handler.setServerIPAddress(this.jIPAddressTextField.getText());
+            // Change screen
+            this.card.show(this.jMainPanel, CHOOSE_CLIENT_LANGUAGE);
+            this.jClientLanguageComboBox.requestFocusInWindow();
+        }
+    }
+
+    /**
+     * Choose a language.
+     */
+    private void chooseLanguage() {
+        // Set language
+        this.handler.setLanguage(this.languages[this.jClientLanguageComboBox
+                .getSelectedIndex()]);
+        // Change screen
+        this.card.show(this.jMainPanel, CHOOSE_CLIENT_NAME);
+        this.jClientNameTextField.requestFocusInWindow();
+    }
+
+    /**
+     * Log in to chat.
+     */
     private void login() {
         try {
             // Set name
-            this.handler.setName(this.jClientNameTextField.getText());
+            this.handler.login(this.jClientNameTextField.getText());
             // Check if the client is ready
             if (this.handler.isReady()) {
                 // Update screen
-                setTitle("CanaChat: " + this.handler.getName());
+                setTitle("Understand Me: " + this.handler.getName());
                 this.card.show(this.jMainPanel, CHAT);
                 this.jMessageTextField.requestFocusInWindow();
             } else {
@@ -108,15 +136,26 @@ public class ChatWindow extends JFrame {
                         + "been chosen, please choose a new name.");
             }
         } catch (InterruptedException ex) {
-            System.err.println("Error in running CanaChat. "
+            System.err.println("Error in running Understand Me. "
                     + "Waiting time error.");
             Logger.getLogger(ChatWindow.class.getName())
                     .log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            System.err.println("Error in running CanaChat. "
+            System.err.println("Error in running Understand Me. "
                     + "The socket could not be created.");
             Logger.getLogger(ChatWindow.class.getName())
                     .log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Send message.
+     */
+    private void send() {
+        if (!this.jMessageTextField.getText().equals("")) {
+            // Send message
+            this.handler.send(this.jMessageTextField.getText());
+            this.jMessageTextField.setText("");
         }
     }
 
@@ -130,34 +169,28 @@ public class ChatWindow extends JFrame {
     private void initComponents() {
 
         jLogOnServerPanel = new javax.swing.JPanel();
-        jIcon0 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jIPAddressTextField = new javax.swing.JTextField();
         jConnectButton = new javax.swing.JButton();
         jEnterTheNamePanel = new javax.swing.JPanel();
-        jIcon1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jClientNameTextField = new javax.swing.JTextField();
         jConfirmNameButton = new javax.swing.JButton();
         jEnterTheLanguagePanel = new javax.swing.JPanel();
-        jIcon2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jConfirmLanguageButton = new javax.swing.JButton();
         jClientLanguageComboBox = new javax.swing.JComboBox<>(languagesName);
         jChatPanel = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         jMessageTextField = new javax.swing.JTextField();
         jSendButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jMessagesTextArea = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jConversation = new javax.swing.JTextPane();
         jMainPanel = new javax.swing.JPanel();
 
         jLogOnServerPanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
-        jIcon0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jIcon0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/brenov/chatclient/view/img/cana-icon-logo.png"))); // NOI18N
-
-        jLabel1.setText("Enter IP Address of the Server:");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("<html>Enter IP Address of the <b>Understand Me</b> Server:</html>");
 
         jIPAddressTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jIPAddressTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -177,33 +210,29 @@ public class ChatWindow extends JFrame {
         jLogOnServerPanel.setLayout(jLogOnServerPanelLayout);
         jLogOnServerPanelLayout.setHorizontalGroup(
             jLogOnServerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jIcon0, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLogOnServerPanelLayout.createSequentialGroup()
+            .addGroup(jLogOnServerPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jLogOnServerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jConnectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
                     .addComponent(jIPAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(108, 108, 108))
+                    .addComponent(jConnectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jLogOnServerPanelLayout.setVerticalGroup(
             jLogOnServerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLogOnServerPanelLayout.createSequentialGroup()
-                .addComponent(jIcon0, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
+                .addGap(106, 106, 106)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jIPAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jConnectButton)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         jEnterTheNamePanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
-        jIcon1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jIcon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/brenov/chatclient/view/img/cana-icon-logo.png"))); // NOI18N
-
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Enter the your name or what do you want to be called:");
 
         jClientNameTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -224,30 +253,29 @@ public class ChatWindow extends JFrame {
         jEnterTheNamePanel.setLayout(jEnterTheNamePanelLayout);
         jEnterTheNamePanelLayout.setHorizontalGroup(
             jEnterTheNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jEnterTheNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                .addComponent(jIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jClientNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jConfirmNameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jLabel2))
+            .addGroup(jEnterTheNamePanelLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(jEnterTheNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jClientNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jConfirmNameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jEnterTheNamePanelLayout.setVerticalGroup(
             jEnterTheNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jEnterTheNamePanelLayout.createSequentialGroup()
-                .addComponent(jIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jEnterTheNamePanelLayout.createSequentialGroup()
+                .addGap(106, 106, 106)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jClientNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jConfirmNameButton)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(108, 108, 108))
         );
 
         jEnterTheLanguagePanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
-        jIcon2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jIcon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/brenov/chatclient/view/img/cana-icon-logo.png"))); // NOI18N
-
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Choose a language:");
 
         jConfirmLanguageButton.setText("Enter");
@@ -264,30 +292,26 @@ public class ChatWindow extends JFrame {
         jEnterTheLanguagePanelLayout.setHorizontalGroup(
             jEnterTheLanguagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jEnterTheLanguagePanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jEnterTheLanguagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel3)
+                    .addComponent(jClientLanguageComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jConfirmLanguageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jIcon2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jClientLanguageComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jEnterTheLanguagePanelLayout.setVerticalGroup(
             jEnterTheLanguagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jEnterTheLanguagePanelLayout.createSequentialGroup()
-                .addComponent(jIcon2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jEnterTheLanguagePanelLayout.createSequentialGroup()
+                .addGap(106, 106, 106)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jClientLanguageComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jConfirmLanguageButton)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(108, 108, 108))
         );
 
         jChatPanel.setPreferredSize(new java.awt.Dimension(400, 300));
-
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/brenov/chatclient/view/img/cana-icon-logo-50px.png"))); // NOI18N
 
         jMessageTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -302,35 +326,32 @@ public class ChatWindow extends JFrame {
             }
         });
 
-        jMessagesTextArea.setColumns(20);
-        jMessagesTextArea.setRows(5);
-        jScrollPane1.setViewportView(jMessagesTextArea);
+        jConversation.setEditable(false);
+        jConversation.setContentType("text/html"); // NOI18N
+        jScrollPane2.setViewportView(jConversation);
 
         javax.swing.GroupLayout jChatPanelLayout = new javax.swing.GroupLayout(jChatPanel);
         jChatPanel.setLayout(jChatPanelLayout);
         jChatPanelLayout.setHorizontalGroup(
             jChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jChatPanelLayout.createSequentialGroup()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jMessageTextField)
+                .addComponent(jMessageTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jSendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jScrollPane2)
         );
         jChatPanelLayout.setVerticalGroup(
             jChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jChatPanelLayout.createSequentialGroup()
-                .addGroup(jChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jMessageTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                    .addComponent(jSendButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
+                .addGroup(jChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jMessageTextField)
+                    .addComponent(jSendButton)))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("CanaChat");
+        setTitle("Understand Me");
         setResizable(false);
 
         javax.swing.GroupLayout jMainPanelLayout = new javax.swing.GroupLayout(jMainPanel);
@@ -359,19 +380,11 @@ public class ChatWindow extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jConnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConnectButtonActionPerformed
-        // Set server IP Address
-        this.handler.setServerIPAddress(this.jIPAddressTextField.getText());
-        // Change screen
-        this.card.show(this.jMainPanel, CHOOSE_CLIENT_LANGUAGE);
-        this.jClientLanguageComboBox.requestFocusInWindow();
+        setIPAddress();
     }//GEN-LAST:event_jConnectButtonActionPerformed
 
     private void jIPAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jIPAddressTextFieldActionPerformed
-        // Set server IP Address
-        this.handler.setServerIPAddress(this.jIPAddressTextField.getText());
-        // Change screen
-        this.card.show(this.jMainPanel, CHOOSE_CLIENT_LANGUAGE);
-        this.jClientLanguageComboBox.requestFocusInWindow();
+        setIPAddress();
     }//GEN-LAST:event_jIPAddressTextFieldActionPerformed
 
     private void jClientNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jClientNameTextFieldActionPerformed
@@ -383,24 +396,15 @@ public class ChatWindow extends JFrame {
     }//GEN-LAST:event_jConfirmNameButtonActionPerformed
 
     private void jConfirmLanguageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmLanguageButtonActionPerformed
-        // Set language
-        this.handler.setLanguage(this.languages[this.jClientLanguageComboBox
-                .getSelectedIndex()]);
-        // Change screen
-        this.card.show(this.jMainPanel, CHOOSE_CLIENT_NAME);
-        this.jClientNameTextField.requestFocusInWindow();
+        chooseLanguage();
     }//GEN-LAST:event_jConfirmLanguageButtonActionPerformed
 
     private void jSendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSendButtonActionPerformed
-        // Send message
-        this.handler.send(this.jMessageTextField.getText());
-        this.jMessageTextField.setText("");
+        send();
     }//GEN-LAST:event_jSendButtonActionPerformed
 
     private void jMessageTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMessageTextFieldActionPerformed
-        // Send message
-        this.handler.send(this.jMessageTextField.getText());
-        this.jMessageTextField.setText("");
+        send();
     }//GEN-LAST:event_jMessageTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -410,21 +414,17 @@ public class ChatWindow extends JFrame {
     private javax.swing.JButton jConfirmLanguageButton;
     private javax.swing.JButton jConfirmNameButton;
     private javax.swing.JButton jConnectButton;
+    private javax.swing.JTextPane jConversation;
     private javax.swing.JPanel jEnterTheLanguagePanel;
     private javax.swing.JPanel jEnterTheNamePanel;
     private javax.swing.JTextField jIPAddressTextField;
-    private javax.swing.JLabel jIcon0;
-    private javax.swing.JLabel jIcon1;
-    private javax.swing.JLabel jIcon2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jLogOnServerPanel;
     private javax.swing.JPanel jMainPanel;
     private javax.swing.JTextField jMessageTextField;
-    private javax.swing.JTextArea jMessagesTextArea;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jSendButton;
     // End of variables declaration//GEN-END:variables
 }
