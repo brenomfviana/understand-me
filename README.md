@@ -22,9 +22,9 @@ The translation is made from the Google Cloud Translation API. The user sends th
 
 - Java 8.0 or greater
 
-## Contribuiting
+## Contributing
 
-Click [here](CONTRIBUITING.md) to see how to contribute.
+Click [here](CONTRIBUTING.md) to see how to contribute.
 
 ## How to compile
 
