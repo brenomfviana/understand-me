@@ -2,11 +2,11 @@
 
 ## Description
 
-**Understand Me** is a multi-user chat that performs simultaneous translation. The user must choose a language in which to converse and all the messages received will be translated, if necessary, into the language that this user chose. Each user must have a unique name, so that the chat server can identify their users and also identify the users in the conversation.
+**Understand Me** is a multi-user chat that performs simultaneous translation. The user must choose a language in which to converse and all the messages received will be translated, if necessary, into the language this user chose. Each user must have an unique name, so the chat server can identify their users.
 
 ### How it works?
 
-The translation is made from the Google Cloud Translation API. The user sends the message to the server that checks their language and applies the translation if necessary to send the message to each of the other users participating in the chat.
+The translation is performed by the Google Cloud Translation API. Users send a message to the server that checks their language and applies the translation if necessary to send the message to each of the other users participating in the chat.
 
 ### Supported Languages
 
@@ -22,9 +22,9 @@ The translation is made from the Google Cloud Translation API. The user sends th
 
 - Java 8.0 or greater
 
-## Contribuiting
+## Contributing
 
-Click [here](CONTRIBUITING.md) to see how to contribute.
+Click [here](CONTRIBUTING.md) to see how to contribute.
 
 ## How to compile
 
