@@ -1,4 +1,4 @@
-# CONTRIBUITING
+# CONTRIBUTING
 
 ## What you can do
 
