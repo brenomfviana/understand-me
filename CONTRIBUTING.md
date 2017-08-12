@@ -1,5 +1,9 @@
 # CONTRIBUTING
 
+## Before contributing
+
+First read the [code of conduct](CODE_OF_CONDUCT.md).
+
 ## What you can do
 
 - Improve the code;
