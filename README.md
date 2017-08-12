@@ -28,45 +28,7 @@ Click [here](CONTRIBUTING.md) to see how to contribute.
 
 ## How to compile
 
-#### Server
-
-Open the project folder:
-
-```bash
-cd ChatServer
-```
-
-To compile the chat server enter the following command:
-
-```bash
-javac -cp lib/*.jar src/br/com/brenov/chatserver/*.java
-```
-
-To generate the jar executable run the following command:
-
-```bash
-jar cfm ChatServer.jar manifest.mf src/br/com/brenov/chatserver/*.class
-```
-
-#### Client
-
-Open the project folder:
-
-```bash
-cd ChatClient
-```
-
-To compile the chat client enter the following command:
-
-```bash
-javac src/br/com/brenov/chatclient/*.java
-```
-
-To generate the jar executable run the following command:
-
-```bash
-jar cfm ChatClient.jar manifest.mf src/br/com/brenov/chatclient/*.class
-```
+To compile, use the IDE of your preference.
 
 ## How to run
 
