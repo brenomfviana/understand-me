@@ -65,6 +65,6 @@ First you need to enter the IP address of the server, then you must choose the l
 
 ## Author
 
-[<img src="https://avatars2.githubusercontent.com/u/17532418?v=3&s=400" width="100"/>](https://github.com/brenov) |
+[<img src="https://avatars2.githubusercontent.com/u/17532418?v=3&s=400" width="100"/>](https://github.com/brenomfviana) |
 ---|
-[Breno Viana](https://github.com/brenov) |
+[Breno Viana](https://github.com/brenomfviana) |
